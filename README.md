@@ -3,7 +3,7 @@
 Small, configurable SwiftUI primitives. The library keeps each app's appearance policy and semantic colors with that app.
 
 ```swift
-.package(url: "https://github.com/Anurag-Chourasia/DesignTokensKit.git", exact: "1.0.0")
+.package(url: "https://github.com/Anurag-Chourasia/DesignTokensKit.git", exact: "1.1.0")
 // Target dependency: .product(name: "DesignTokensKit", package: "DesignTokensKit")
 ```
 
@@ -34,3 +34,9 @@ Run `swift test -Xswiftc -strict-concurrency=complete -Xswiftc -warnings-as-erro
 Owner: Anurag Chourasia. A shared API needs a concrete consumer, public documentation, meaningful tests and explicit compatibility intent. Preserve exact geometry and adaptive colors. Breaking semantics require a major version; published tags must not move.
 
 MIT — Copyright (c) 2026 Anurag Chourasia.
+
+## Additional primitives (1.1.0)
+
+Spacing adds 4, 5, 10, 14, 30 and 32 points from existing app layouts. `CornerRadius` supplies 4, 6, 10, 12, 14, 15, 20 and 30 points; bespoke values such as ShowBook's 26.5 remain caller-owned. `StrokeWidth.one/two` are point values, not pixel hairlines. `TouchTarget.minimum` is 44 points; artwork dimensions do not define hit areas.
+
+`IconMetrics` separates artwork size from optional padding. Nil preserves SwiftUI system padding, zero explicitly removes it. `MessageTypography` supplies overridable semantic fonts (largeTitle/headline/caption) without freezing Dynamic Type to point sizes. Store app brand palettes in app-owned `SemanticColors` values; the package does not define either app's colors.
