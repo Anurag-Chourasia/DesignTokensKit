@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0
+
+- Add source-backed spacing, corner and stroke primitives, minimum touch target, configurable icon metrics and semantic message typography.
+- Preserve all 1.0.0 defaults and public APIs.
+
 ## 1.0.0 — initial candidate
 
 - Add exact shared spacing primitives and configurable surface/button metrics.

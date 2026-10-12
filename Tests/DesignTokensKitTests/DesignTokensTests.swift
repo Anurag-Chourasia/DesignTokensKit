@@ -10,6 +10,14 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertEqual(ButtonMetrics().minimumWidth, 44)
     }
 
+    func testIconPaddingDistinguishesSystemDefaultFromExplicitZero() {
+        XCTAssertNil(IconMetrics().padding)
+        let metrics = IconMetrics(size: CGSize(width: 21, height: 19), padding: 0)
+        XCTAssertEqual(metrics.size, CGSize(width: 21, height: 19))
+        XCTAssertEqual(metrics.padding, 0)
+        XCTAssertEqual(ButtonMetrics().minimumHeight, TouchTarget.minimum)
+    }
+
     func testBespokeGeometryIsNotRoundedOrNormalized() {
         let insets = EdgeInsets(top: 16, leading: 23, bottom: 16, trailing: 23)
         let metrics = SurfaceMetrics(padding: insets, cornerRadius: 26.5, borderWidth: 1)
