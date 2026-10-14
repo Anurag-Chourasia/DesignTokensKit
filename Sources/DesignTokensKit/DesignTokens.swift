@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Exact point values shared by consumers. These are primitives, not app roles.
-/// Keep implicit system padding and bespoke dimensions at their original call sites.
+/// System-default padding is represented by Spacing.system; bespoke point values live in DesignMetric.
 public enum Spacing {
     public static let four: CGFloat = 4
     public static let five: CGFloat = 5

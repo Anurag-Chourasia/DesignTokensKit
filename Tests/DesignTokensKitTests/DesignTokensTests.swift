@@ -3,6 +3,17 @@ import XCTest
 import DesignTokensKit
 
 final class DesignTokensTests: XCTestCase {
+    func testCompactTilePresetsRetainBothGeometryVariants() {
+        let regular = CatalogTileMetrics.compactGrid(accessibility: false)
+        let accessible = CatalogTileMetrics.compactGrid(accessibility: true)
+        XCTAssertEqual(regular.width, 120)
+        XCTAssertEqual(regular.contentWidth, 110)
+        XCTAssertEqual(accessible.width, 160)
+        XCTAssertEqual(accessible.minimumHeight, 170)
+        XCTAssertEqual(CatalogMetrics.coverListSize, CGSize(width: 60, height: 100))
+        XCTAssertNil(Spacing.system)
+    }
+
     func testExactPrimitivesAndDefaultInsets() {
         XCTAssertEqual([Spacing.eight, Spacing.twelve, Spacing.sixteen, Spacing.twenty], [8, 12, 16, 20])
         XCTAssertEqual(SurfaceMetrics().padding, EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))

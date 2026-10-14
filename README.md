@@ -40,3 +40,6 @@ MIT — Copyright (c) 2026 Anurag Chourasia.
 Spacing adds 4, 5, 10, 14, 30 and 32 points from existing app layouts. `CornerRadius` supplies 4, 6, 10, 12, 14, 15, 20 and 30 points; bespoke values such as ShowBook's 26.5 remain caller-owned. `StrokeWidth.one/two` are point values, not pixel hairlines. `TouchTarget.minimum` is 44 points; artwork dimensions do not define hit areas.
 
 `IconMetrics` separates artwork size from optional padding. Nil preserves SwiftUI system padding, zero explicitly removes it. `MessageTypography` supplies overridable semantic fonts (largeTitle/headline/caption) without freezing Dynamic Type to point sizes. Store app brand palettes in app-owned `SemanticColors` values; the package does not define either app's colors.
+
+
+Catalog metrics provide shared list/grid geometry, including the existing compact media grid. `DesignMetric` exposes exact point primitives for bespoke dimensions; prefer `CatalogMetrics`, `Spacing`, `CornerRadius`, and `TouchTarget` when their roles apply. `Typography`, `DesignColor`, `OpacityToken`, and `ScaleToken` keep visual values out of consuming apps. System colors remain dynamic. `Spacing.system` retains native environment-dependent padding; it is not replaced by a guessed point value.
