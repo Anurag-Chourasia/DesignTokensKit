@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0
+
+- Add shared catalog tile geometry, cover metrics, typography, dynamic/system colors, palette values, point primitives, opacity and scale tokens.
+- Represent environment-dependent SwiftUI padding explicitly with Spacing.system.
+- Retain all existing APIs and geometry defaults.
+
 ## 1.1.0
 
 - Add source-backed spacing, corner and stroke primitives, minimum touch target, configurable icon metrics and semantic message typography.
