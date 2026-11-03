@@ -330,6 +330,7 @@ public struct DesignTokensTheme: Sendable, Equatable {
     public var cornerRadius: CornerRadiusTheme
     public var metric: DesignMetricTheme
     public var opacity: OpacityTheme
+    public var symbols: SymbolTheme
 
     public init(
         typography: TypographyTheme = .default,
@@ -337,7 +338,8 @@ public struct DesignTokensTheme: Sendable, Equatable {
         strokeWidth: StrokeWidthTheme = .default,
         cornerRadius: CornerRadiusTheme = .default,
         metric: DesignMetricTheme = .default,
-        opacity: OpacityTheme = .default
+        opacity: OpacityTheme = .default,
+        symbols: SymbolTheme = .default
     ) {
         self.typography = typography
         self.spacing = spacing
@@ -345,6 +347,7 @@ public struct DesignTokensTheme: Sendable, Equatable {
         self.cornerRadius = cornerRadius
         self.metric = metric
         self.opacity = opacity
+        self.symbols = symbols
     }
 
     public static let `default` = DesignTokensTheme()

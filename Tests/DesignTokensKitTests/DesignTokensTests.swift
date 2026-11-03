@@ -74,4 +74,17 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertEqual(AppSymbol.book.systemName, "book")
         XCTAssertEqual(DesignSymbol.sparkles, AppSymbol.sparkles)
     }
+
+    func testKeyPathSymbolInitializers() {
+        let image = Image(\.crop)
+        XCTAssertNotNil(image)
+        let imageWithExplicitLabel = Image(systemName: \.cropSquare)
+        XCTAssertNotNil(imageWithExplicitLabel)
+        #if canImport(UIKit)
+        let uiImage = UIImage(systemName: \.cropSquare)
+        XCTAssertNotNil(uiImage)
+        let uiImageDirect = UIImage(\.crop)
+        XCTAssertNotNil(uiImageDirect)
+        #endif
+    }
 }
