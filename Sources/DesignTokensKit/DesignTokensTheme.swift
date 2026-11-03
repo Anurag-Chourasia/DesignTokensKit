@@ -474,18 +474,54 @@ extension View {
     }
 
     /// Overload standard SwiftUI `foregroundColor` modifier using a ColorTheme keypath: `.foregroundColor(\.white)`
-    public func foregroundColor(_ keyPath: KeyPath<ColorTheme, Color>) -> some View {
-        self.modifier(TokenForegroundColorModifier(keyPath: keyPath))
+    public func foregroundColor(_ keyPath: KeyPath<ColorTheme, Color>, opacity: KeyPath<OpacityTheme, Double>? = nil) -> some View {
+        self.modifier(TokenForegroundColorModifier(keyPath: keyPath, opacity: opacity))
     }
 
     /// Overload standard SwiftUI `tint` modifier using a ColorTheme keypath: `.tint(\.white)`
-    public func tint(_ keyPath: KeyPath<ColorTheme, Color>) -> some View {
-        self.modifier(TokenTintModifier(keyPath: keyPath))
+    public func tint(_ keyPath: KeyPath<ColorTheme, Color>, opacity: KeyPath<OpacityTheme, Double>? = nil) -> some View {
+        self.modifier(TokenTintModifier(keyPath: keyPath, opacity: opacity))
     }
 
     /// Overload standard SwiftUI `background` color modifier using a ColorTheme keypath: `.background(\.grouped)`
-    public func background(_ keyPath: KeyPath<ColorTheme, Color>) -> some View {
-        self.modifier(TokenBackgroundColorModifier(keyPath: keyPath))
+    public func background(_ keyPath: KeyPath<ColorTheme, Color>, opacity: KeyPath<OpacityTheme, Double>? = nil) -> some View {
+        self.modifier(TokenBackgroundColorModifier(keyPath: keyPath, opacity: opacity))
+    }
+
+    /// Overload standard SwiftUI `shadow` modifier using theme keypaths: `.shadow(color: \.black, opacity: \.p0_1, radius: \.ten, y: \.five)`
+    public func shadow(
+        color: KeyPath<ColorTheme, Color>,
+        opacity: KeyPath<OpacityTheme, Double>? = nil,
+        radius: KeyPath<SpacingTheme, CGFloat>,
+        x: CGFloat = 0,
+        y: KeyPath<SpacingTheme, CGFloat>? = nil,
+        colorTheme: ColorTheme = .default,
+        opacityTheme: OpacityTheme = .default,
+        spacingTheme: SpacingTheme = .default
+    ) -> some View {
+        let base = colorTheme[keyPath: color]
+        let resolved = opacity != nil ? base.opacity(opacityTheme[keyPath: opacity!]) : base
+        let resolvedY = y != nil ? spacingTheme[keyPath: y!] : 0
+        return self.shadow(color: resolved, radius: spacingTheme[keyPath: radius], x: x, y: resolvedY)
+    }
+
+    /// Overload standard SwiftUI `lineSpacing` modifier using a DesignMetricTheme keypath: `.lineSpacing(\.p3)`
+    public func lineSpacing(_ keyPath: KeyPath<DesignMetricTheme, CGFloat>, theme: DesignMetricTheme = .default) -> some View {
+        self.lineSpacing(theme[keyPath: keyPath])
+    }
+
+    /// Overload standard SwiftUI `frame` modifier using DesignMetricTheme keypaths
+    public func frame(
+        width: KeyPath<DesignMetricTheme, CGFloat>? = nil,
+        height: KeyPath<DesignMetricTheme, CGFloat>? = nil,
+        alignment: Alignment = .center,
+        theme: DesignMetricTheme = .default
+    ) -> some View {
+        self.frame(
+            width: width.map { theme[keyPath: $0] },
+            height: height.map { theme[keyPath: $0] },
+            alignment: alignment
+        )
     }
 
     // Backwards-compatible aliases
@@ -550,27 +586,121 @@ private struct TokenCornerRadiusModifier: ViewModifier {
 private struct TokenForegroundColorModifier: ViewModifier {
     @Environment(\.designTokens) private var theme
     let keyPath: KeyPath<ColorTheme, Color>
+    let opacity: KeyPath<OpacityTheme, Double>?
 
     func body(content: Content) -> some View {
-        content.foregroundColor(theme.colors[keyPath: keyPath])
+        let base = theme.colors[keyPath: keyPath]
+        let resolved = opacity != nil ? base.opacity(theme.opacity[keyPath: opacity!]) : base
+        content.foregroundColor(resolved)
     }
 }
 
 private struct TokenTintModifier: ViewModifier {
     @Environment(\.designTokens) private var theme
     let keyPath: KeyPath<ColorTheme, Color>
+    let opacity: KeyPath<OpacityTheme, Double>?
 
     func body(content: Content) -> some View {
-        content.tint(theme.colors[keyPath: keyPath])
+        let base = theme.colors[keyPath: keyPath]
+        let resolved = opacity != nil ? base.opacity(theme.opacity[keyPath: opacity!]) : base
+        content.tint(resolved)
     }
 }
 
 private struct TokenBackgroundColorModifier: ViewModifier {
     @Environment(\.designTokens) private var theme
     let keyPath: KeyPath<ColorTheme, Color>
+    let opacity: KeyPath<OpacityTheme, Double>?
 
     func body(content: Content) -> some View {
-        content.background(theme.colors[keyPath: keyPath])
+        let base = theme.colors[keyPath: keyPath]
+        let resolved = opacity != nil ? base.opacity(theme.opacity[keyPath: opacity!]) : base
+        content.background(resolved)
+    }
+}
+
+// MARK: - Shape KeyPath Styling
+
+extension Shape {
+    /// Fill a Shape with a ColorTheme keypath and optional OpacityTheme keypath
+    public func fill(
+        _ colorKeyPath: KeyPath<ColorTheme, Color>,
+        opacity: KeyPath<OpacityTheme, Double>? = nil,
+        colorTheme: ColorTheme = .default,
+        opacityTheme: OpacityTheme = .default
+    ) -> some View {
+        let base = colorTheme[keyPath: colorKeyPath]
+        let resolved = opacity != nil ? base.opacity(opacityTheme[keyPath: opacity!]) : base
+        return self.fill(resolved)
+    }
+
+    /// Stroke a Shape with a ColorTheme keypath, optional OpacityTheme keypath, and StrokeWidthTheme keypath
+    public func stroke(
+        _ colorKeyPath: KeyPath<ColorTheme, Color>,
+        opacity: KeyPath<OpacityTheme, Double>? = nil,
+        lineWidth: KeyPath<StrokeWidthTheme, CGFloat> = \.one,
+        colorTheme: ColorTheme = .default,
+        opacityTheme: OpacityTheme = .default,
+        strokeWidthTheme: StrokeWidthTheme = .default
+    ) -> some View {
+        let base = colorTheme[keyPath: colorKeyPath]
+        let resolved = opacity != nil ? base.opacity(opacityTheme[keyPath: opacity!]) : base
+        return self.stroke(resolved, lineWidth: strokeWidthTheme[keyPath: lineWidth])
+    }
+}
+
+// MARK: - RoundedRectangle KeyPath Overload
+
+extension RoundedRectangle {
+    /// Initialize RoundedRectangle using CornerRadiusTheme keypath: `RoundedRectangle(cornerRadius: \.twelve)`
+    public init(
+        cornerRadius: KeyPath<CornerRadiusTheme, CGFloat>,
+        style: RoundedCornerStyle = .continuous,
+        theme: CornerRadiusTheme = .default
+    ) {
+        self.init(cornerRadius: theme[keyPath: cornerRadius], style: style)
+    }
+}
+
+// MARK: - LinearGradient Theme Overloads
+
+public struct ThemeColorStop: @unchecked Sendable, Equatable {
+    public let color: KeyPath<ColorTheme, Color>
+    public let opacity: KeyPath<OpacityTheme, Double>?
+
+    public init(_ color: KeyPath<ColorTheme, Color>, opacity: KeyPath<OpacityTheme, Double>? = nil) {
+        self.color = color
+        self.opacity = opacity
+    }
+}
+
+extension LinearGradient {
+    /// Initialize LinearGradient using ColorTheme keypaths: `LinearGradient(themeColors: [\.oceanAction, \.blue], ...)`
+    public init(
+        themeColors: [KeyPath<ColorTheme, Color>],
+        startPoint: UnitPoint,
+        endPoint: UnitPoint,
+        theme: ColorTheme = .default
+    ) {
+        self.init(colors: themeColors.map { theme[keyPath: $0] }, startPoint: startPoint, endPoint: endPoint)
+    }
+
+    /// Initialize LinearGradient using ThemeColorStop entries with optional opacities
+    public init(
+        stops: [ThemeColorStop],
+        startPoint: UnitPoint,
+        endPoint: UnitPoint,
+        colorTheme: ColorTheme = .default,
+        opacityTheme: OpacityTheme = .default
+    ) {
+        let resolvedColors = stops.map { stop -> Color in
+            let base = colorTheme[keyPath: stop.color]
+            if let op = stop.opacity {
+                return base.opacity(opacityTheme[keyPath: op])
+            }
+            return base
+        }
+        self.init(colors: resolvedColors, startPoint: startPoint, endPoint: endPoint)
     }
 }
 
