@@ -120,6 +120,7 @@ public struct CornerRadiusTheme: Sendable, Equatable {
     public let twelve: CGFloat
     public let fourteen: CGFloat
     public let fifteen: CGFloat
+    public let sixteen: CGFloat
     public let twenty: CGFloat
     public let thirty: CGFloat
 
@@ -130,6 +131,7 @@ public struct CornerRadiusTheme: Sendable, Equatable {
         twelve: CGFloat = CornerRadius.twelve,
         fourteen: CGFloat = CornerRadius.fourteen,
         fifteen: CGFloat = CornerRadius.fifteen,
+        sixteen: CGFloat = CornerRadius.sixteen,
         twenty: CGFloat = CornerRadius.twenty,
         thirty: CGFloat = CornerRadius.thirty
     ) {
@@ -139,6 +141,7 @@ public struct CornerRadiusTheme: Sendable, Equatable {
         self.twelve = twelve
         self.fourteen = fourteen
         self.fifteen = fifteen
+        self.sixteen = sixteen
         self.twenty = twenty
         self.thirty = thirty
     }
