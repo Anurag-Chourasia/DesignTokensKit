@@ -162,6 +162,7 @@ public struct DesignMetricTheme: Sendable, Equatable {
     public let p10: CGFloat
     public let p12: CGFloat
     public let p13: CGFloat
+    public let p14: CGFloat
     public let p16: CGFloat
     public let p18: CGFloat
     public let p19: CGFloat
@@ -205,6 +206,7 @@ public struct DesignMetricTheme: Sendable, Equatable {
         p10: CGFloat = DesignMetric.p10,
         p12: CGFloat = DesignMetric.p12,
         p13: CGFloat = DesignMetric.p13,
+        p14: CGFloat = DesignMetric.p14,
         p16: CGFloat = DesignMetric.p16,
         p18: CGFloat = DesignMetric.p18,
         p19: CGFloat = DesignMetric.p19,
@@ -247,6 +249,7 @@ public struct DesignMetricTheme: Sendable, Equatable {
         self.p10 = p10
         self.p12 = p12
         self.p13 = p13
+        self.p14 = p14
         self.p16 = p16
         self.p18 = p18
         self.p19 = p19
