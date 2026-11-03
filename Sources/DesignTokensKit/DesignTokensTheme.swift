@@ -469,6 +469,16 @@ extension View {
         self.modifier(TokenFontModifier(keyPath: keyPath))
     }
 
+    /// Overload standard SwiftUI `font` modifier using a DesignMetricTheme size keypath: `.font(size: \.p60)`
+    public func font(
+        size: KeyPath<DesignMetricTheme, CGFloat>,
+        weight: Font.Weight = .regular,
+        design: Font.Design = .default,
+        theme: DesignMetricTheme = .default
+    ) -> some View {
+        self.font(.system(size: theme[keyPath: size], weight: weight, design: design))
+    }
+
     /// Overload standard SwiftUI `padding` modifier using a SpacingTheme keypath: `.padding(\.eight)` or `.padding(.horizontal, \.eight)`
     public func padding(_ edges: Edge.Set = .all, _ keyPath: KeyPath<SpacingTheme, CGFloat>) -> some View {
         self.modifier(TokenPaddingModifier(edges: edges, keyPath: keyPath))
