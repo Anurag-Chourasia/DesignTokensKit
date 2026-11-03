@@ -62,4 +62,16 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertEqual(colors.foreground.resolve(in: dark), Color.primary.resolve(in: dark))
         XCTAssertNotEqual(colors.foreground.resolve(in: light), colors.foreground.resolve(in: dark))
     }
+
+    func testAppSymbolsAllHaveNonEmptySystemNames() {
+        XCTAssertFalse(AppSymbol.allCases.isEmpty)
+        for symbol in AppSymbol.allCases {
+            XCTAssertFalse(symbol.systemName.isEmpty, "Symbol \(symbol) systemName should not be empty")
+            XCTAssertFalse(symbol.rawValue.isEmpty, "Symbol \(symbol) rawValue should not be empty")
+        }
+        XCTAssertEqual(AppSymbol.heartFill.systemName, "heart.fill")
+        XCTAssertEqual(AppSymbol.tv.systemName, "tv")
+        XCTAssertEqual(AppSymbol.book.systemName, "book")
+        XCTAssertEqual(DesignSymbol.sparkles, AppSymbol.sparkles)
+    }
 }
