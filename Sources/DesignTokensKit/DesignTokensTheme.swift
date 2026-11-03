@@ -549,6 +549,28 @@ extension View {
         )
     }
 
+    /// Overload standard SwiftUI `frame` with min/ideal/max constraints using DesignMetricTheme keypaths
+    public func frame(
+        minWidth: KeyPath<DesignMetricTheme, CGFloat>? = nil,
+        idealWidth: KeyPath<DesignMetricTheme, CGFloat>? = nil,
+        maxWidth: KeyPath<DesignMetricTheme, CGFloat>? = nil,
+        minHeight: KeyPath<DesignMetricTheme, CGFloat>? = nil,
+        idealHeight: KeyPath<DesignMetricTheme, CGFloat>? = nil,
+        maxHeight: KeyPath<DesignMetricTheme, CGFloat>? = nil,
+        alignment: Alignment = .center,
+        theme: DesignMetricTheme = .default
+    ) -> some View {
+        self.frame(
+            minWidth: minWidth.map { theme[keyPath: $0] },
+            idealWidth: idealWidth.map { theme[keyPath: $0] },
+            maxWidth: maxWidth.map { theme[keyPath: $0] },
+            minHeight: minHeight.map { theme[keyPath: $0] },
+            idealHeight: idealHeight.map { theme[keyPath: $0] },
+            maxHeight: maxHeight.map { theme[keyPath: $0] },
+            alignment: alignment
+        )
+    }
+
     /// Overload standard SwiftUI `minimumScaleFactor` modifier using an OpacityTheme keypath: `.minimumScaleFactor(\.p0_6)`
     public func minimumScaleFactor(_ keyPath: KeyPath<OpacityTheme, Double>, theme: OpacityTheme = .default) -> some View {
         self.minimumScaleFactor(theme[keyPath: keyPath])
