@@ -116,6 +116,7 @@ public struct StrokeWidthTheme: Sendable, Equatable {
 public struct CornerRadiusTheme: Sendable, Equatable {
     public let four: CGFloat
     public let six: CGFloat
+    public let eight: CGFloat
     public let ten: CGFloat
     public let twelve: CGFloat
     public let fourteen: CGFloat
@@ -127,6 +128,7 @@ public struct CornerRadiusTheme: Sendable, Equatable {
     public init(
         four: CGFloat = CornerRadius.four,
         six: CGFloat = CornerRadius.six,
+        eight: CGFloat = CornerRadius.eight,
         ten: CGFloat = CornerRadius.ten,
         twelve: CGFloat = CornerRadius.twelve,
         fourteen: CGFloat = CornerRadius.fourteen,
@@ -137,6 +139,7 @@ public struct CornerRadiusTheme: Sendable, Equatable {
     ) {
         self.four = four
         self.six = six
+        self.eight = eight
         self.ten = ten
         self.twelve = twelve
         self.fourteen = fourteen
@@ -513,6 +516,11 @@ extension View {
         self.modifier(TokenCornerRadiusModifier(keyPath: keyPath))
     }
 
+    /// Overload standard SwiftUI `cornerRadius` modifier using a DesignMetricTheme keypath: `.cornerRadius(\.p8)`
+    public func cornerRadius(_ keyPath: KeyPath<DesignMetricTheme, CGFloat>) -> some View {
+        self.modifier(TokenMetricCornerRadiusModifier(keyPath: keyPath))
+    }
+
     /// Overload standard SwiftUI `foregroundColor` modifier using a ColorTheme keypath: `.foregroundColor(\.white)`
     public func foregroundColor(_ keyPath: KeyPath<ColorTheme, Color>, opacity: KeyPath<OpacityTheme, Double>? = nil) -> some View {
         self.modifier(TokenForegroundColorModifier(keyPath: keyPath, opacity: opacity))
@@ -657,6 +665,15 @@ private struct TokenCornerRadiusModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content.cornerRadius(theme.cornerRadius[keyPath: keyPath])
+    }
+}
+
+private struct TokenMetricCornerRadiusModifier: ViewModifier {
+    @Environment(\.designTokens) private var theme
+    let keyPath: KeyPath<DesignMetricTheme, CGFloat>
+
+    func body(content: Content) -> some View {
+        content.cornerRadius(theme.metric[keyPath: keyPath])
     }
 }
 

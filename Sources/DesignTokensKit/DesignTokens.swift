@@ -21,6 +21,7 @@ public enum Spacing {
 public enum CornerRadius {
     public static let four: CGFloat = 4
     public static let six: CGFloat = 6
+    public static let eight: CGFloat = 8
     public static let ten: CGFloat = 10
     public static let twelve: CGFloat = 12
     public static let fourteen: CGFloat = 14
