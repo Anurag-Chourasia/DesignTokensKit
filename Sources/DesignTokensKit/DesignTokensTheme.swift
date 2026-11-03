@@ -803,3 +803,64 @@ extension HStack {
         self.init(alignment: alignment, spacing: spacingKeyPath, content: content)
     }
 }
+
+extension LazyVStack {
+    /// Overload LazyVStack with SpacingTheme keypath: `LazyVStack(spacing: \.twelve) { ... }`
+    public init(
+        alignment: HorizontalAlignment = .center,
+        spacing: KeyPath<SpacingTheme, CGFloat>,
+        pinnedViews: PinnedScrollableViews = .init(),
+        @ViewBuilder content: () -> Content
+    ) {
+        self.init(alignment: alignment, spacing: SpacingTheme.default[keyPath: spacing], pinnedViews: pinnedViews, content: content)
+    }
+}
+
+extension LazyHStack {
+    /// Overload LazyHStack with SpacingTheme keypath: `LazyHStack(spacing: \.twelve) { ... }`
+    public init(
+        alignment: VerticalAlignment = .center,
+        spacing: KeyPath<SpacingTheme, CGFloat>,
+        pinnedViews: PinnedScrollableViews = .init(),
+        @ViewBuilder content: () -> Content
+    ) {
+        self.init(alignment: alignment, spacing: SpacingTheme.default[keyPath: spacing], pinnedViews: pinnedViews, content: content)
+    }
+}
+
+extension LazyVGrid {
+    /// Overload LazyVGrid with SpacingTheme keypath: `LazyVGrid(columns: [...], spacing: \.twelve) { ... }`
+    public init(
+        columns: [GridItem],
+        alignment: HorizontalAlignment = .center,
+        spacing: KeyPath<SpacingTheme, CGFloat>,
+        pinnedViews: PinnedScrollableViews = .init(),
+        @ViewBuilder content: () -> Content
+    ) {
+        self.init(columns: columns, alignment: alignment, spacing: SpacingTheme.default[keyPath: spacing], pinnedViews: pinnedViews, content: content)
+    }
+}
+
+extension LazyHGrid {
+    /// Overload LazyHGrid with SpacingTheme keypath: `LazyHGrid(rows: [...], spacing: \.twelve) { ... }`
+    public init(
+        rows: [GridItem],
+        alignment: VerticalAlignment = .center,
+        spacing: KeyPath<SpacingTheme, CGFloat>,
+        pinnedViews: PinnedScrollableViews = .init(),
+        @ViewBuilder content: () -> Content
+    ) {
+        self.init(rows: rows, alignment: alignment, spacing: SpacingTheme.default[keyPath: spacing], pinnedViews: pinnedViews, content: content)
+    }
+}
+
+extension GridItem {
+    /// Overload GridItem with SpacingTheme keypath: `GridItem(.adaptive(...), spacing: \.twelve)`
+    public init(
+        _ size: GridItem.Size = .flexible(),
+        spacing: KeyPath<SpacingTheme, CGFloat>,
+        alignment: Alignment? = nil
+    ) {
+        self.init(size, spacing: SpacingTheme.default[keyPath: spacing], alignment: alignment)
+    }
+}
