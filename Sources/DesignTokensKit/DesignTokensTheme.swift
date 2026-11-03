@@ -185,14 +185,17 @@ public struct DesignMetricTheme: Sendable, Equatable {
     public let p120: CGFloat
     public let p140: CGFloat
     public let p160: CGFloat
+    public let p210: CGFloat
+    public let p248: CGFloat
     public let p300: CGFloat
+    public let p320: CGFloat
     public let p400: CGFloat
 
     public init(
         p0: CGFloat = DesignMetric.p0,
         p1: CGFloat = DesignMetric.p1,
         p1_5: CGFloat = DesignMetric.p1_5,
-        p2: CGFloat = 2,
+        p2: CGFloat = DesignMetric.p2,
         p3: CGFloat = DesignMetric.p3,
         p4: CGFloat = DesignMetric.p4,
         p8: CGFloat = DesignMetric.p8,
@@ -225,7 +228,10 @@ public struct DesignMetricTheme: Sendable, Equatable {
         p120: CGFloat = DesignMetric.p120,
         p140: CGFloat = DesignMetric.p140,
         p160: CGFloat = DesignMetric.p160,
-        p300: CGFloat = 300,
+        p210: CGFloat = DesignMetric.p210,
+        p248: CGFloat = DesignMetric.p248,
+        p300: CGFloat = DesignMetric.p300,
+        p320: CGFloat = DesignMetric.p320,
         p400: CGFloat = DesignMetric.p400
     ) {
         self.p0 = p0
@@ -264,7 +270,10 @@ public struct DesignMetricTheme: Sendable, Equatable {
         self.p120 = p120
         self.p140 = p140
         self.p160 = p160
+        self.p210 = p210
+        self.p248 = p248
         self.p300 = p300
+        self.p320 = p320
         self.p400 = p400
     }
 

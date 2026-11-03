@@ -11,6 +11,7 @@ public enum DesignMetric {
     public static let p0: CGFloat = 0
     public static let p1: CGFloat = 1
     public static let p1_5: CGFloat = 1.5
+    public static let p2: CGFloat = 2
     public static let p3: CGFloat = 3
     public static let p4: CGFloat = 4
     public static let p8: CGFloat = 8
@@ -43,6 +44,10 @@ public enum DesignMetric {
     public static let p120: CGFloat = 120
     public static let p140: CGFloat = 140
     public static let p160: CGFloat = 160
+    public static let p210: CGFloat = 210
+    public static let p248: CGFloat = 248
+    public static let p300: CGFloat = 300
+    public static let p320: CGFloat = 320
     public static let p400: CGFloat = 400
 }
 
