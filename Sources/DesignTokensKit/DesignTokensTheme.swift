@@ -494,6 +494,15 @@ extension View {
         self.modifier(TokenPaddingModifier(edges: .all, keyPath: keyPath))
     }
 
+    /// Overload standard SwiftUI `padding` modifier using a DesignMetricTheme keypath: `.padding(\.p16)` or `.padding(.horizontal, \.p10)`
+    public func padding(_ edges: Edge.Set = .all, _ keyPath: KeyPath<DesignMetricTheme, CGFloat>) -> some View {
+        self.modifier(TokenMetricPaddingModifier(edges: edges, keyPath: keyPath))
+    }
+
+    public func padding(_ keyPath: KeyPath<DesignMetricTheme, CGFloat>) -> some View {
+        self.modifier(TokenMetricPaddingModifier(edges: .all, keyPath: keyPath))
+    }
+
     /// Overload standard SwiftUI `opacity` modifier using an OpacityTheme keypath: `.opacity(\.p0_8)`
     public func opacity(_ keyPath: KeyPath<OpacityTheme, Double>) -> some View {
         self.modifier(TokenOpacityModifier(keyPath: keyPath))
@@ -620,6 +629,16 @@ private struct TokenPaddingModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content.padding(edges, theme.spacing[keyPath: keyPath])
+    }
+}
+
+private struct TokenMetricPaddingModifier: ViewModifier {
+    @Environment(\.designTokens) private var theme
+    let edges: Edge.Set
+    let keyPath: KeyPath<DesignMetricTheme, CGFloat>
+
+    func body(content: Content) -> some View {
+        content.padding(edges, theme.metric[keyPath: keyPath])
     }
 }
 
