@@ -533,7 +533,16 @@ extension View {
 
     /// Overload standard SwiftUI `background` color modifier using a ColorTheme keypath: `.background(\.grouped)`
     public func background(_ keyPath: KeyPath<ColorTheme, Color>, opacity: KeyPath<OpacityTheme, Double>? = nil) -> some View {
-        self.modifier(TokenBackgroundColorModifier(keyPath: keyPath, opacity: opacity))
+        self.modifier(TokenBackgroundColorModifier(keyPath: keyPath, opacity: opacity, ignoresSafeAreaEdges: nil))
+    }
+
+    /// Overload standard SwiftUI `background` color modifier with safe area ignoring support: `.background(\.black, ignoresSafeAreaEdges: .all)`
+    public func background(
+        _ keyPath: KeyPath<ColorTheme, Color>,
+        opacity: KeyPath<OpacityTheme, Double>? = nil,
+        ignoresSafeAreaEdges edges: Edge.Set?
+    ) -> some View {
+        self.modifier(TokenBackgroundColorModifier(keyPath: keyPath, opacity: opacity, ignoresSafeAreaEdges: edges))
     }
 
     /// Overload standard SwiftUI `shadow` modifier using theme keypaths: `.shadow(color: \.black, opacity: \.p0_1, radius: \.ten, y: \.five)`
@@ -705,11 +714,16 @@ private struct TokenBackgroundColorModifier: ViewModifier {
     @Environment(\.designTokens) private var theme
     let keyPath: KeyPath<ColorTheme, Color>
     let opacity: KeyPath<OpacityTheme, Double>?
+    let ignoresSafeAreaEdges: Edge.Set?
 
     func body(content: Content) -> some View {
         let base = theme.colors[keyPath: keyPath]
         let resolved = opacity != nil ? base.opacity(theme.opacity[keyPath: opacity!]) : base
-        content.background(resolved)
+        if let edges = ignoresSafeAreaEdges {
+            content.background(resolved.ignoresSafeArea(edges: edges))
+        } else {
+            content.background(resolved)
+        }
     }
 }
 
