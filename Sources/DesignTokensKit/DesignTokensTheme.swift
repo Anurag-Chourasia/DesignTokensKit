@@ -330,6 +330,74 @@ public struct OpacityTheme: Sendable, Equatable {
     public static let `default` = OpacityTheme()
 }
 
+// MARK: - Color KeyPath Theme
+
+public struct ColorTheme: Sendable, Equatable {
+    public var primary: Color
+    public var secondary: Color
+    public var accentColor: Color
+    public var white: Color
+    public var black: Color
+    public var gray: Color
+    public var red: Color
+    public var green: Color
+    public var blue: Color
+    public var yellow: Color
+    public var orange: Color
+    public var clear: Color
+    public var oceanAction: Color
+    public var turquoise: Color
+    public var ink: Color
+    public var lightBorder: Color
+    public var grouped: Color
+    public var groupedSecondary: Color
+    public var separator: Color
+
+    public init(
+        primary: Color = DesignColor.primary,
+        secondary: Color = DesignColor.secondary,
+        accentColor: Color = DesignColor.accentColor,
+        white: Color = DesignColor.white,
+        black: Color = DesignColor.black,
+        gray: Color = DesignColor.gray,
+        red: Color = DesignColor.red,
+        green: Color = DesignColor.green,
+        blue: Color = DesignColor.blue,
+        yellow: Color = DesignColor.yellow,
+        orange: Color = DesignColor.orange,
+        clear: Color = DesignColor.clear,
+        oceanAction: Color = DesignColor.oceanAction,
+        turquoise: Color = DesignColor.turquoise,
+        ink: Color = DesignColor.ink,
+        lightBorder: Color = DesignColor.lightBorder,
+        grouped: Color = DesignColor.grouped,
+        groupedSecondary: Color = DesignColor.groupedSecondary,
+        separator: Color = DesignColor.separator
+    ) {
+        self.primary = primary
+        self.secondary = secondary
+        self.accentColor = accentColor
+        self.white = white
+        self.black = black
+        self.gray = gray
+        self.red = red
+        self.green = green
+        self.blue = blue
+        self.yellow = yellow
+        self.orange = orange
+        self.clear = clear
+        self.oceanAction = oceanAction
+        self.turquoise = turquoise
+        self.ink = ink
+        self.lightBorder = lightBorder
+        self.grouped = grouped
+        self.groupedSecondary = groupedSecondary
+        self.separator = separator
+    }
+
+    public static let `default` = ColorTheme()
+}
+
 // MARK: - Root DesignTokensTheme
 
 public struct DesignTokensTheme: Sendable, Equatable {
@@ -340,6 +408,7 @@ public struct DesignTokensTheme: Sendable, Equatable {
     public var metric: DesignMetricTheme
     public var opacity: OpacityTheme
     public var symbols: SymbolTheme
+    public var colors: ColorTheme
 
     public init(
         typography: TypographyTheme = .default,
@@ -348,7 +417,8 @@ public struct DesignTokensTheme: Sendable, Equatable {
         cornerRadius: CornerRadiusTheme = .default,
         metric: DesignMetricTheme = .default,
         opacity: OpacityTheme = .default,
-        symbols: SymbolTheme = .default
+        symbols: SymbolTheme = .default,
+        colors: ColorTheme = .default
     ) {
         self.typography = typography
         self.spacing = spacing
@@ -357,6 +427,7 @@ public struct DesignTokensTheme: Sendable, Equatable {
         self.metric = metric
         self.opacity = opacity
         self.symbols = symbols
+        self.colors = colors
     }
 
     public static let `default` = DesignTokensTheme()
@@ -400,6 +471,21 @@ extension View {
     /// Overload standard SwiftUI `cornerRadius` modifier using a CornerRadiusTheme keypath: `.cornerRadius(\.twelve)`
     public func cornerRadius(_ keyPath: KeyPath<CornerRadiusTheme, CGFloat>) -> some View {
         self.modifier(TokenCornerRadiusModifier(keyPath: keyPath))
+    }
+
+    /// Overload standard SwiftUI `foregroundColor` modifier using a ColorTheme keypath: `.foregroundColor(\.white)`
+    public func foregroundColor(_ keyPath: KeyPath<ColorTheme, Color>) -> some View {
+        self.modifier(TokenForegroundColorModifier(keyPath: keyPath))
+    }
+
+    /// Overload standard SwiftUI `tint` modifier using a ColorTheme keypath: `.tint(\.white)`
+    public func tint(_ keyPath: KeyPath<ColorTheme, Color>) -> some View {
+        self.modifier(TokenTintModifier(keyPath: keyPath))
+    }
+
+    /// Overload standard SwiftUI `background` color modifier using a ColorTheme keypath: `.background(\.grouped)`
+    public func background(_ keyPath: KeyPath<ColorTheme, Color>) -> some View {
+        self.modifier(TokenBackgroundColorModifier(keyPath: keyPath))
     }
 
     // Backwards-compatible aliases
@@ -458,6 +544,33 @@ private struct TokenCornerRadiusModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content.cornerRadius(theme.cornerRadius[keyPath: keyPath])
+    }
+}
+
+private struct TokenForegroundColorModifier: ViewModifier {
+    @Environment(\.designTokens) private var theme
+    let keyPath: KeyPath<ColorTheme, Color>
+
+    func body(content: Content) -> some View {
+        content.foregroundColor(theme.colors[keyPath: keyPath])
+    }
+}
+
+private struct TokenTintModifier: ViewModifier {
+    @Environment(\.designTokens) private var theme
+    let keyPath: KeyPath<ColorTheme, Color>
+
+    func body(content: Content) -> some View {
+        content.tint(theme.colors[keyPath: keyPath])
+    }
+}
+
+private struct TokenBackgroundColorModifier: ViewModifier {
+    @Environment(\.designTokens) private var theme
+    let keyPath: KeyPath<ColorTheme, Color>
+
+    func body(content: Content) -> some View {
+        content.background(theme.colors[keyPath: keyPath])
     }
 }
 
