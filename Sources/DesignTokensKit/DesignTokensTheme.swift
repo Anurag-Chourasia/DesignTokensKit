@@ -152,6 +152,7 @@ public struct DesignMetricTheme: Sendable, Equatable {
     public let p0: CGFloat
     public let p1: CGFloat
     public let p1_5: CGFloat
+    public let p2: CGFloat
     public let p3: CGFloat
     public let p4: CGFloat
     public let p8: CGFloat
@@ -184,12 +185,14 @@ public struct DesignMetricTheme: Sendable, Equatable {
     public let p120: CGFloat
     public let p140: CGFloat
     public let p160: CGFloat
+    public let p300: CGFloat
     public let p400: CGFloat
 
     public init(
         p0: CGFloat = DesignMetric.p0,
         p1: CGFloat = DesignMetric.p1,
         p1_5: CGFloat = DesignMetric.p1_5,
+        p2: CGFloat = 2,
         p3: CGFloat = DesignMetric.p3,
         p4: CGFloat = DesignMetric.p4,
         p8: CGFloat = DesignMetric.p8,
@@ -222,11 +225,13 @@ public struct DesignMetricTheme: Sendable, Equatable {
         p120: CGFloat = DesignMetric.p120,
         p140: CGFloat = DesignMetric.p140,
         p160: CGFloat = DesignMetric.p160,
+        p300: CGFloat = 300,
         p400: CGFloat = DesignMetric.p400
     ) {
         self.p0 = p0
         self.p1 = p1
         self.p1_5 = p1_5
+        self.p2 = p2
         self.p3 = p3
         self.p4 = p4
         self.p8 = p8
@@ -259,6 +264,7 @@ public struct DesignMetricTheme: Sendable, Equatable {
         self.p120 = p120
         self.p140 = p140
         self.p160 = p160
+        self.p300 = p300
         self.p400 = p400
     }
 
@@ -522,6 +528,11 @@ extension View {
             height: height.map { theme[keyPath: $0] },
             alignment: alignment
         )
+    }
+
+    /// Overload standard SwiftUI `minimumScaleFactor` modifier using an OpacityTheme keypath: `.minimumScaleFactor(\.p0_6)`
+    public func minimumScaleFactor(_ keyPath: KeyPath<OpacityTheme, Double>, theme: OpacityTheme = .default) -> some View {
+        self.minimumScaleFactor(theme[keyPath: keyPath])
     }
 
     // Backwards-compatible aliases
