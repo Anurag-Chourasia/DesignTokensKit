@@ -1,0 +1,459 @@
+import SwiftUI
+
+// MARK: - Typography KeyPath Theme
+
+public struct TypographyTheme: Sendable, Equatable {
+    public let largeTitle: Font
+    public let title: Font
+    public let title2: Font
+    public let title3: Font
+    public let headline: Font
+    public let subheadline: Font
+    public let body: Font
+    public let callout: Font
+    public let footnote: Font
+    public let caption: Font
+    public let caption2: Font
+
+    public init(
+        largeTitle: Font = .largeTitle,
+        title: Font = .title,
+        title2: Font = .title2,
+        title3: Font = .title3,
+        headline: Font = .headline,
+        subheadline: Font = .subheadline,
+        body: Font = .body,
+        callout: Font = .callout,
+        footnote: Font = .footnote,
+        caption: Font = .caption,
+        caption2: Font = .caption2
+    ) {
+        self.largeTitle = largeTitle
+        self.title = title
+        self.title2 = title2
+        self.title3 = title3
+        self.headline = headline
+        self.subheadline = subheadline
+        self.body = body
+        self.callout = callout
+        self.footnote = footnote
+        self.caption = caption
+        self.caption2 = caption2
+    }
+
+    public static let `default` = TypographyTheme()
+}
+
+// MARK: - Spacing KeyPath Theme
+
+public struct SpacingTheme: Sendable, Equatable {
+    public let four: CGFloat
+    public let five: CGFloat
+    public let eight: CGFloat
+    public let ten: CGFloat
+    public let twelve: CGFloat
+    public let fourteen: CGFloat
+    public let sixteen: CGFloat
+    public let twenty: CGFloat
+    public let thirty: CGFloat
+    public let thirtyTwo: CGFloat
+
+    public init(
+        four: CGFloat = Spacing.four,
+        five: CGFloat = Spacing.five,
+        eight: CGFloat = Spacing.eight,
+        ten: CGFloat = Spacing.ten,
+        twelve: CGFloat = Spacing.twelve,
+        fourteen: CGFloat = Spacing.fourteen,
+        sixteen: CGFloat = Spacing.sixteen,
+        twenty: CGFloat = Spacing.twenty,
+        thirty: CGFloat = Spacing.thirty,
+        thirtyTwo: CGFloat = Spacing.thirtyTwo
+    ) {
+        self.four = four
+        self.five = five
+        self.eight = eight
+        self.ten = ten
+        self.twelve = twelve
+        self.fourteen = fourteen
+        self.sixteen = sixteen
+        self.twenty = twenty
+        self.thirty = thirty
+        self.thirtyTwo = thirtyTwo
+    }
+
+    public static let `default` = SpacingTheme()
+}
+
+// MARK: - StrokeWidth KeyPath Theme
+
+public struct StrokeWidthTheme: Sendable, Equatable {
+    public let one: CGFloat
+    public let two: CGFloat
+
+    public init(
+        one: CGFloat = StrokeWidth.one,
+        two: CGFloat = StrokeWidth.two
+    ) {
+        self.one = one
+        self.two = two
+    }
+
+    public static let `default` = StrokeWidthTheme()
+}
+
+// MARK: - CornerRadius KeyPath Theme
+
+public struct CornerRadiusTheme: Sendable, Equatable {
+    public let four: CGFloat
+    public let six: CGFloat
+    public let ten: CGFloat
+    public let twelve: CGFloat
+    public let fourteen: CGFloat
+    public let fifteen: CGFloat
+    public let twenty: CGFloat
+    public let thirty: CGFloat
+
+    public init(
+        four: CGFloat = CornerRadius.four,
+        six: CGFloat = CornerRadius.six,
+        ten: CGFloat = CornerRadius.ten,
+        twelve: CGFloat = CornerRadius.twelve,
+        fourteen: CGFloat = CornerRadius.fourteen,
+        fifteen: CGFloat = CornerRadius.fifteen,
+        twenty: CGFloat = CornerRadius.twenty,
+        thirty: CGFloat = CornerRadius.thirty
+    ) {
+        self.four = four
+        self.six = six
+        self.ten = ten
+        self.twelve = twelve
+        self.fourteen = fourteen
+        self.fifteen = fifteen
+        self.twenty = twenty
+        self.thirty = thirty
+    }
+
+    public static let `default` = CornerRadiusTheme()
+}
+
+// MARK: - DesignMetric KeyPath Theme
+
+public struct DesignMetricTheme: Sendable, Equatable {
+    public let p0: CGFloat
+    public let p1: CGFloat
+    public let p1_5: CGFloat
+    public let p3: CGFloat
+    public let p4: CGFloat
+    public let p8: CGFloat
+    public let p10: CGFloat
+    public let p12: CGFloat
+    public let p13: CGFloat
+    public let p16: CGFloat
+    public let p18: CGFloat
+    public let p19: CGFloat
+    public let p20: CGFloat
+    public let p21: CGFloat
+    public let p22_58: CGFloat
+    public let p24: CGFloat
+    public let p26_5: CGFloat
+    public let p30: CGFloat
+    public let p31: CGFloat
+    public let p33: CGFloat
+    public let p34: CGFloat
+    public let p35: CGFloat
+    public let p36: CGFloat
+    public let p40: CGFloat
+    public let p50: CGFloat
+    public let p53: CGFloat
+    public let p55: CGFloat
+    public let p60: CGFloat
+    public let p64: CGFloat
+    public let p80: CGFloat
+    public let p100: CGFloat
+    public let p110: CGFloat
+    public let p120: CGFloat
+    public let p140: CGFloat
+    public let p160: CGFloat
+    public let p400: CGFloat
+
+    public init(
+        p0: CGFloat = DesignMetric.p0,
+        p1: CGFloat = DesignMetric.p1,
+        p1_5: CGFloat = DesignMetric.p1_5,
+        p3: CGFloat = DesignMetric.p3,
+        p4: CGFloat = DesignMetric.p4,
+        p8: CGFloat = DesignMetric.p8,
+        p10: CGFloat = DesignMetric.p10,
+        p12: CGFloat = DesignMetric.p12,
+        p13: CGFloat = DesignMetric.p13,
+        p16: CGFloat = DesignMetric.p16,
+        p18: CGFloat = DesignMetric.p18,
+        p19: CGFloat = DesignMetric.p19,
+        p20: CGFloat = DesignMetric.p20,
+        p21: CGFloat = DesignMetric.p21,
+        p22_58: CGFloat = DesignMetric.p22_58,
+        p24: CGFloat = DesignMetric.p24,
+        p26_5: CGFloat = DesignMetric.p26_5,
+        p30: CGFloat = DesignMetric.p30,
+        p31: CGFloat = DesignMetric.p31,
+        p33: CGFloat = DesignMetric.p33,
+        p34: CGFloat = DesignMetric.p34,
+        p35: CGFloat = DesignMetric.p35,
+        p36: CGFloat = DesignMetric.p36,
+        p40: CGFloat = DesignMetric.p40,
+        p50: CGFloat = DesignMetric.p50,
+        p53: CGFloat = DesignMetric.p53,
+        p55: CGFloat = DesignMetric.p55,
+        p60: CGFloat = DesignMetric.p60,
+        p64: CGFloat = DesignMetric.p64,
+        p80: CGFloat = DesignMetric.p80,
+        p100: CGFloat = DesignMetric.p100,
+        p110: CGFloat = DesignMetric.p110,
+        p120: CGFloat = DesignMetric.p120,
+        p140: CGFloat = DesignMetric.p140,
+        p160: CGFloat = DesignMetric.p160,
+        p400: CGFloat = DesignMetric.p400
+    ) {
+        self.p0 = p0
+        self.p1 = p1
+        self.p1_5 = p1_5
+        self.p3 = p3
+        self.p4 = p4
+        self.p8 = p8
+        self.p10 = p10
+        self.p12 = p12
+        self.p13 = p13
+        self.p16 = p16
+        self.p18 = p18
+        self.p19 = p19
+        self.p20 = p20
+        self.p21 = p21
+        self.p22_58 = p22_58
+        self.p24 = p24
+        self.p26_5 = p26_5
+        self.p30 = p30
+        self.p31 = p31
+        self.p33 = p33
+        self.p34 = p34
+        self.p35 = p35
+        self.p36 = p36
+        self.p40 = p40
+        self.p50 = p50
+        self.p53 = p53
+        self.p55 = p55
+        self.p60 = p60
+        self.p64 = p64
+        self.p80 = p80
+        self.p100 = p100
+        self.p110 = p110
+        self.p120 = p120
+        self.p140 = p140
+        self.p160 = p160
+        self.p400 = p400
+    }
+
+    public static let `default` = DesignMetricTheme()
+}
+
+// MARK: - Opacity KeyPath Theme
+
+public struct OpacityTheme: Sendable, Equatable {
+    public let p0_05: Double
+    public let p0_1: Double
+    public let p0_15: Double
+    public let p0_18: Double
+    public let p0_2: Double
+    public let p0_25: Double
+    public let p0_3: Double
+    public let p0_35: Double
+    public let p0_4: Double
+    public let p0_5: Double
+    public let p0_55: Double
+    public let p0_6: Double
+    public let p0_7: Double
+    public let p0_75: Double
+    public let p0_8: Double
+    public let p0_85: Double
+    public let p0_9: Double
+    public let p1_0: Double
+
+    public init(
+        p0_05: Double = OpacityToken.p0_05,
+        p0_1: Double = OpacityToken.p0_1,
+        p0_15: Double = OpacityToken.p0_15,
+        p0_18: Double = OpacityToken.p0_18,
+        p0_2: Double = OpacityToken.p0_2,
+        p0_25: Double = OpacityToken.p0_25,
+        p0_3: Double = OpacityToken.p0_3,
+        p0_35: Double = OpacityToken.p0_35,
+        p0_4: Double = OpacityToken.p0_4,
+        p0_5: Double = OpacityToken.p0_5,
+        p0_55: Double = OpacityToken.p0_55,
+        p0_6: Double = OpacityToken.p0_6,
+        p0_7: Double = OpacityToken.p0_7,
+        p0_75: Double = OpacityToken.p0_75,
+        p0_8: Double = OpacityToken.p0_8,
+        p0_85: Double = OpacityToken.p0_85,
+        p0_9: Double = OpacityToken.p0_9,
+        p1_0: Double = OpacityToken.p1_0
+    ) {
+        self.p0_05 = p0_05
+        self.p0_1 = p0_1
+        self.p0_15 = p0_15
+        self.p0_18 = p0_18
+        self.p0_2 = p0_2
+        self.p0_25 = p0_25
+        self.p0_3 = p0_3
+        self.p0_35 = p0_35
+        self.p0_4 = p0_4
+        self.p0_5 = p0_5
+        self.p0_55 = p0_55
+        self.p0_6 = p0_6
+        self.p0_7 = p0_7
+        self.p0_75 = p0_75
+        self.p0_8 = p0_8
+        self.p0_85 = p0_85
+        self.p0_9 = p0_9
+        self.p1_0 = p1_0
+    }
+
+    public static let `default` = OpacityTheme()
+}
+
+// MARK: - Root DesignTokensTheme
+
+public struct DesignTokensTheme: Sendable, Equatable {
+    public var typography: TypographyTheme
+    public var spacing: SpacingTheme
+    public var strokeWidth: StrokeWidthTheme
+    public var cornerRadius: CornerRadiusTheme
+    public var metric: DesignMetricTheme
+    public var opacity: OpacityTheme
+
+    public init(
+        typography: TypographyTheme = .default,
+        spacing: SpacingTheme = .default,
+        strokeWidth: StrokeWidthTheme = .default,
+        cornerRadius: CornerRadiusTheme = .default,
+        metric: DesignMetricTheme = .default,
+        opacity: OpacityTheme = .default
+    ) {
+        self.typography = typography
+        self.spacing = spacing
+        self.strokeWidth = strokeWidth
+        self.cornerRadius = cornerRadius
+        self.metric = metric
+        self.opacity = opacity
+    }
+
+    public static let `default` = DesignTokensTheme()
+}
+
+// MARK: - SwiftUI Environment Integration
+
+private struct DesignTokensThemeKey: EnvironmentKey {
+    static let defaultValue: DesignTokensTheme = .default
+}
+
+extension EnvironmentValues {
+    public var designTokens: DesignTokensTheme {
+        get { self[DesignTokensThemeKey.self] }
+        set { self[DesignTokensThemeKey.self] = newValue }
+    }
+}
+
+// MARK: - View Modifiers for KeyPath-Based Styling
+
+extension View {
+    public func tokenFont(_ keyPath: KeyPath<TypographyTheme, Font>) -> some View {
+        self.modifier(TokenFontModifier(keyPath: keyPath))
+    }
+
+    public func tokenPadding(_ edges: Edge.Set = .all, _ keyPath: KeyPath<SpacingTheme, CGFloat>) -> some View {
+        self.modifier(TokenPaddingModifier(edges: edges, keyPath: keyPath))
+    }
+
+    public func tokenOpacity(_ keyPath: KeyPath<OpacityTheme, Double>) -> some View {
+        self.modifier(TokenOpacityModifier(keyPath: keyPath))
+    }
+
+    public func tokenCornerRadius(_ keyPath: KeyPath<CornerRadiusTheme, CGFloat>) -> some View {
+        self.modifier(TokenCornerRadiusModifier(keyPath: keyPath))
+    }
+}
+
+private struct TokenFontModifier: ViewModifier {
+    @Environment(\.designTokens) private var theme
+    let keyPath: KeyPath<TypographyTheme, Font>
+
+    func body(content: Content) -> some View {
+        content.font(theme.typography[keyPath: keyPath])
+    }
+}
+
+private struct TokenPaddingModifier: ViewModifier {
+    @Environment(\.designTokens) private var theme
+    let edges: Edge.Set
+    let keyPath: KeyPath<SpacingTheme, CGFloat>
+
+    func body(content: Content) -> some View {
+        content.padding(edges, theme.spacing[keyPath: keyPath])
+    }
+}
+
+private struct TokenOpacityModifier: ViewModifier {
+    @Environment(\.designTokens) private var theme
+    let keyPath: KeyPath<OpacityTheme, Double>
+
+    func body(content: Content) -> some View {
+        content.opacity(theme.opacity[keyPath: keyPath])
+    }
+}
+
+private struct TokenCornerRadiusModifier: ViewModifier {
+    @Environment(\.designTokens) private var theme
+    let keyPath: KeyPath<CornerRadiusTheme, CGFloat>
+
+    func body(content: Content) -> some View {
+        content.cornerRadius(theme.cornerRadius[keyPath: keyPath])
+    }
+}
+
+// MARK: - Layout Container Helpers for KeyPath Spacing
+
+extension VStack {
+    public init(
+        alignment: HorizontalAlignment = .center,
+        spacingKeyPath: KeyPath<SpacingTheme, CGFloat>,
+        @ViewBuilder content: () -> Content
+    ) {
+        self.init(alignment: alignment, spacing: SpacingTheme.default[keyPath: spacingKeyPath], content: content)
+    }
+
+    public init(
+        alignment: HorizontalAlignment = .center,
+        strokeWidthKeyPath: KeyPath<StrokeWidthTheme, CGFloat>,
+        @ViewBuilder content: () -> Content
+    ) {
+        self.init(alignment: alignment, spacing: StrokeWidthTheme.default[keyPath: strokeWidthKeyPath], content: content)
+    }
+}
+
+extension HStack {
+    public init(
+        alignment: VerticalAlignment = .center,
+        spacingKeyPath: KeyPath<SpacingTheme, CGFloat>,
+        @ViewBuilder content: () -> Content
+    ) {
+        self.init(alignment: alignment, spacing: SpacingTheme.default[keyPath: spacingKeyPath], content: content)
+    }
+
+    public init(
+        alignment: VerticalAlignment = .center,
+        strokeWidthKeyPath: KeyPath<StrokeWidthTheme, CGFloat>,
+        @ViewBuilder content: () -> Content
+    ) {
+        self.init(alignment: alignment, spacing: StrokeWidthTheme.default[keyPath: strokeWidthKeyPath], content: content)
+    }
+}

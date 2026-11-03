@@ -47,11 +47,23 @@ public enum DesignMetric {
 }
 
 public enum OpacityToken {
+    public static let p0_05: Double = 0.05
+    public static let p0_1: Double = 0.1
     public static let p0_15: Double = 0.15
+    public static let p0_18: Double = 0.18
     public static let p0_2: Double = 0.2
+    public static let p0_25: Double = 0.25
     public static let p0_3: Double = 0.3
     public static let p0_35: Double = 0.35
+    public static let p0_4: Double = 0.4
     public static let p0_5: Double = 0.5
+    public static let p0_55: Double = 0.55
+    public static let p0_6: Double = 0.6
+    public static let p0_7: Double = 0.7
+    public static let p0_75: Double = 0.75
+    public static let p0_8: Double = 0.8
+    public static let p0_85: Double = 0.85
+    public static let p0_9: Double = 0.9
     public static let p1_0: Double = 1.0
 }
 
