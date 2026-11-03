@@ -87,4 +87,19 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertNotNil(uiImageDirect)
         #endif
     }
+
+    @MainActor
+    func testKeyPathViewModifiersAndContainers() {
+        let view = VStack(spacing: \.six) {
+            HStack(spacing: \.ten) {
+                Image(\.crop)
+                    .font(\.caption2)
+                    .padding(\.eight)
+                    .padding(.horizontal, \.eight)
+                    .opacity(\.p0_8)
+                    .cornerRadius(\.twelve)
+            }
+        }
+        XCTAssertNotNil(view)
+    }
 }

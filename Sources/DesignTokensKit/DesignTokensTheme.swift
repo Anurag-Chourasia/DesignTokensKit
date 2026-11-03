@@ -47,8 +47,11 @@ public struct TypographyTheme: Sendable, Equatable {
 // MARK: - Spacing KeyPath Theme
 
 public struct SpacingTheme: Sendable, Equatable {
+    public let zero: CGFloat
+    public let two: CGFloat
     public let four: CGFloat
     public let five: CGFloat
+    public let six: CGFloat
     public let eight: CGFloat
     public let ten: CGFloat
     public let twelve: CGFloat
@@ -59,8 +62,11 @@ public struct SpacingTheme: Sendable, Equatable {
     public let thirtyTwo: CGFloat
 
     public init(
+        zero: CGFloat = Spacing.zero,
+        two: CGFloat = Spacing.two,
         four: CGFloat = Spacing.four,
         five: CGFloat = Spacing.five,
+        six: CGFloat = Spacing.six,
         eight: CGFloat = Spacing.eight,
         ten: CGFloat = Spacing.ten,
         twelve: CGFloat = Spacing.twelve,
@@ -70,8 +76,11 @@ public struct SpacingTheme: Sendable, Equatable {
         thirty: CGFloat = Spacing.thirty,
         thirtyTwo: CGFloat = Spacing.thirtyTwo
     ) {
+        self.zero = zero
+        self.two = two
         self.four = four
         self.five = five
+        self.six = six
         self.eight = eight
         self.ten = ten
         self.twelve = twelve
@@ -366,23 +375,52 @@ extension EnvironmentValues {
     }
 }
 
-// MARK: - View Modifiers for KeyPath-Based Styling
+// MARK: - View Modifiers for KeyPath-Based Styling (SwiftUI Overloads)
 
 extension View {
-    public func tokenFont(_ keyPath: KeyPath<TypographyTheme, Font>) -> some View {
+    /// Overload standard SwiftUI `font` modifier using a TypographyTheme keypath: `.font(\.caption2)`
+    public func font(_ keyPath: KeyPath<TypographyTheme, Font>) -> some View {
         self.modifier(TokenFontModifier(keyPath: keyPath))
     }
 
-    public func tokenPadding(_ edges: Edge.Set = .all, _ keyPath: KeyPath<SpacingTheme, CGFloat>) -> some View {
+    /// Overload standard SwiftUI `padding` modifier using a SpacingTheme keypath: `.padding(\.eight)` or `.padding(.horizontal, \.eight)`
+    public func padding(_ edges: Edge.Set = .all, _ keyPath: KeyPath<SpacingTheme, CGFloat>) -> some View {
         self.modifier(TokenPaddingModifier(edges: edges, keyPath: keyPath))
     }
 
-    public func tokenOpacity(_ keyPath: KeyPath<OpacityTheme, Double>) -> some View {
+    public func padding(_ keyPath: KeyPath<SpacingTheme, CGFloat>) -> some View {
+        self.modifier(TokenPaddingModifier(edges: .all, keyPath: keyPath))
+    }
+
+    /// Overload standard SwiftUI `opacity` modifier using an OpacityTheme keypath: `.opacity(\.p0_8)`
+    public func opacity(_ keyPath: KeyPath<OpacityTheme, Double>) -> some View {
         self.modifier(TokenOpacityModifier(keyPath: keyPath))
     }
 
-    public func tokenCornerRadius(_ keyPath: KeyPath<CornerRadiusTheme, CGFloat>) -> some View {
+    /// Overload standard SwiftUI `cornerRadius` modifier using a CornerRadiusTheme keypath: `.cornerRadius(\.twelve)`
+    public func cornerRadius(_ keyPath: KeyPath<CornerRadiusTheme, CGFloat>) -> some View {
         self.modifier(TokenCornerRadiusModifier(keyPath: keyPath))
+    }
+
+    // Backwards-compatible aliases
+    @available(*, deprecated, renamed: "font(_:)")
+    public func tokenFont(_ keyPath: KeyPath<TypographyTheme, Font>) -> some View {
+        self.font(keyPath)
+    }
+
+    @available(*, deprecated, renamed: "padding(_:_:)")
+    public func tokenPadding(_ edges: Edge.Set = .all, _ keyPath: KeyPath<SpacingTheme, CGFloat>) -> some View {
+        self.padding(edges, keyPath)
+    }
+
+    @available(*, deprecated, renamed: "opacity(_:)")
+    public func tokenOpacity(_ keyPath: KeyPath<OpacityTheme, Double>) -> some View {
+        self.opacity(keyPath)
+    }
+
+    @available(*, deprecated, renamed: "cornerRadius(_:)")
+    public func tokenCornerRadius(_ keyPath: KeyPath<CornerRadiusTheme, CGFloat>) -> some View {
+        self.cornerRadius(keyPath)
     }
 }
 
@@ -423,40 +461,44 @@ private struct TokenCornerRadiusModifier: ViewModifier {
     }
 }
 
-// MARK: - Layout Container Helpers for KeyPath Spacing
+// MARK: - Layout Container Overloads for KeyPath Spacing
 
 extension VStack {
+    /// Overload standard VStack with SpacingTheme keypath: `VStack(spacing: \.six) { ... }`
+    public init(
+        alignment: HorizontalAlignment = .center,
+        spacing: KeyPath<SpacingTheme, CGFloat>,
+        @ViewBuilder content: () -> Content
+    ) {
+        self.init(alignment: alignment, spacing: SpacingTheme.default[keyPath: spacing], content: content)
+    }
+
+    @available(*, deprecated, renamed: "init(alignment:spacing:content:)")
     public init(
         alignment: HorizontalAlignment = .center,
         spacingKeyPath: KeyPath<SpacingTheme, CGFloat>,
         @ViewBuilder content: () -> Content
     ) {
-        self.init(alignment: alignment, spacing: SpacingTheme.default[keyPath: spacingKeyPath], content: content)
-    }
-
-    public init(
-        alignment: HorizontalAlignment = .center,
-        strokeWidthKeyPath: KeyPath<StrokeWidthTheme, CGFloat>,
-        @ViewBuilder content: () -> Content
-    ) {
-        self.init(alignment: alignment, spacing: StrokeWidthTheme.default[keyPath: strokeWidthKeyPath], content: content)
+        self.init(alignment: alignment, spacing: spacingKeyPath, content: content)
     }
 }
 
 extension HStack {
+    /// Overload standard HStack with SpacingTheme keypath: `HStack(spacing: \.ten) { ... }`
+    public init(
+        alignment: VerticalAlignment = .center,
+        spacing: KeyPath<SpacingTheme, CGFloat>,
+        @ViewBuilder content: () -> Content
+    ) {
+        self.init(alignment: alignment, spacing: SpacingTheme.default[keyPath: spacing], content: content)
+    }
+
+    @available(*, deprecated, renamed: "init(alignment:spacing:content:)")
     public init(
         alignment: VerticalAlignment = .center,
         spacingKeyPath: KeyPath<SpacingTheme, CGFloat>,
         @ViewBuilder content: () -> Content
     ) {
-        self.init(alignment: alignment, spacing: SpacingTheme.default[keyPath: spacingKeyPath], content: content)
-    }
-
-    public init(
-        alignment: VerticalAlignment = .center,
-        strokeWidthKeyPath: KeyPath<StrokeWidthTheme, CGFloat>,
-        @ViewBuilder content: () -> Content
-    ) {
-        self.init(alignment: alignment, spacing: StrokeWidthTheme.default[keyPath: strokeWidthKeyPath], content: content)
+        self.init(alignment: alignment, spacing: spacingKeyPath, content: content)
     }
 }

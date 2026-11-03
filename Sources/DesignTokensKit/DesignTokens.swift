@@ -3,8 +3,10 @@ import SwiftUI
 /// Exact point values shared by consumers. These are primitives, not app roles.
 /// System-default padding is represented by Spacing.system; bespoke point values live in DesignMetric.
 public enum Spacing {
+    public static let two: CGFloat = 2
     public static let four: CGFloat = 4
     public static let five: CGFloat = 5
+    public static let six: CGFloat = 6
     public static let eight: CGFloat = 8
     public static let ten: CGFloat = 10
     public static let twelve: CGFloat = 12
