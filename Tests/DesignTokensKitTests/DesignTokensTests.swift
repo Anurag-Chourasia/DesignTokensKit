@@ -110,4 +110,19 @@ final class DesignTokensTests: XCTestCase {
         }
         XCTAssertNotNil(view)
     }
+
+    func testAccentThemeAndColors() {
+        XCTAssertEqual(AccentTheme.allCases.count, 4)
+        XCTAssertEqual(AccentTheme.resolve(from: "ocean"), .ocean)
+        XCTAssertEqual(AccentTheme.resolve(from: "invalid"), .default)
+        XCTAssertEqual(AccentTheme.ocean.colorKeyPath, \.accentOcean)
+        XCTAssertEqual(AccentTheme.mint.colorKeyPath, \.accentMint)
+        XCTAssertEqual(AccentTheme.sunset.colorKeyPath, \.accentSunset)
+        XCTAssertEqual(AccentTheme.default.colorKeyPath, \.accentColor)
+
+        let colors = ColorTheme.default
+        XCTAssertNotNil(colors.accentOcean)
+        XCTAssertNotNil(colors.accentMint)
+        XCTAssertNotNil(colors.accentSunset)
+    }
 }

@@ -388,6 +388,9 @@ public struct ColorTheme: Sendable, Equatable {
     public var grouped: Color
     public var groupedSecondary: Color
     public var separator: Color
+    public var accentOcean: Color
+    public var accentMint: Color
+    public var accentSunset: Color
 
     public init(
         primary: Color = DesignColor.primary,
@@ -408,7 +411,10 @@ public struct ColorTheme: Sendable, Equatable {
         lightBorder: Color = DesignColor.lightBorder,
         grouped: Color = DesignColor.grouped,
         groupedSecondary: Color = DesignColor.groupedSecondary,
-        separator: Color = DesignColor.separator
+        separator: Color = DesignColor.separator,
+        accentOcean: Color = DesignColor.accentOcean,
+        accentMint: Color = DesignColor.accentMint,
+        accentSunset: Color = DesignColor.accentSunset
     ) {
         self.primary = primary
         self.secondary = secondary
@@ -429,6 +435,9 @@ public struct ColorTheme: Sendable, Equatable {
         self.grouped = grouped
         self.groupedSecondary = groupedSecondary
         self.separator = separator
+        self.accentOcean = accentOcean
+        self.accentMint = accentMint
+        self.accentSunset = accentSunset
     }
 
     public static let `default` = ColorTheme()
