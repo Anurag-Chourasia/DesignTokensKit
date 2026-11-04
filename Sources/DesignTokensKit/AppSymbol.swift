@@ -215,6 +215,14 @@ extension Label where Title == Text, Icon == Image {
         self.init(titleKey, systemImage: theme[keyPath: keyPath].systemName)
     }
 
+    public init(_ title: Text, _ keyPath: KeyPath<SymbolTheme, AppSymbol>, theme: SymbolTheme = .default) {
+        self.init {
+            title
+        } icon: {
+            Image(theme[keyPath: keyPath].systemName)
+        }
+    }
+
     /// Initialize with explicit systemImage keypath: `Label(title, systemImage: \.cropSquare)`
     public init<S>(_ title: S, systemImage keyPath: KeyPath<SymbolTheme, AppSymbol>, theme: SymbolTheme = .default) where S: StringProtocol {
         self.init(title, systemImage: theme[keyPath: keyPath].systemName)
@@ -224,12 +232,28 @@ extension Label where Title == Text, Icon == Image {
         self.init(titleKey, systemImage: theme[keyPath: keyPath].systemName)
     }
 
+    public init(_ title: Text, systemImage keyPath: KeyPath<SymbolTheme, AppSymbol>, theme: SymbolTheme = .default) {
+        self.init {
+            title
+        } icon: {
+            Image(theme[keyPath: keyPath].systemName)
+        }
+    }
+
     public init(_ titleKey: LocalizedStringKey, symbol: AppSymbol) {
         self.init(titleKey, systemImage: symbol.systemName)
     }
 
     public init<S>(_ title: S, symbol: AppSymbol) where S: StringProtocol {
         self.init(title, systemImage: symbol.systemName)
+    }
+
+    public init(_ title: Text, symbol: AppSymbol) {
+        self.init {
+            title
+        } icon: {
+            Image(symbol.systemName)
+        }
     }
 }
 
