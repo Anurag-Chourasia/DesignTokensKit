@@ -84,6 +84,8 @@ public enum AppSymbol: String, Sendable, CaseIterable {
     case line3HorizontalDecrease = "line.3.horizontal.decrease"
     case line3HorizontalDecreaseCircle = "line.3.horizontal.decrease.circle"
     case circleLefthalfFilled = "circle.lefthalf.filled"
+    case circle = "circle"
+    case largecircleFillCircle = "largecircle.fill.circle"
 
     public var systemName: String { rawValue }
 }
@@ -177,6 +179,8 @@ public struct SymbolTheme: Sendable, Equatable {
     public var line3HorizontalDecreaseCircle: AppSymbol = .line3HorizontalDecreaseCircle
     public var filter: AppSymbol = .line3HorizontalDecreaseCircle
     public var circleLefthalfFilled: AppSymbol = .circleLefthalfFilled
+    public var circle: AppSymbol = .circle
+    public var largecircleFillCircle: AppSymbol = .largecircleFillCircle
 
     public init() {}
 
