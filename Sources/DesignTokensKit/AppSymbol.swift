@@ -6,6 +6,12 @@ import UIKit
 /// Strongly-typed canonical iconography tokens backed by Apple SF Symbols.
 /// Centralizes all glyph identifiers across client apps and shared kits.
 public enum AppSymbol: String, Sendable, CaseIterable {
+    case eye = "eye"
+    case eyeSlash = "eye.slash"
+    case star = "star"
+    case starFill = "star.fill"
+    case checkmarkSquare = "checkmark.square"
+    case square = "square"
     // Universal & Navigation
     case checkmark = "checkmark"
     case checkmarkCircleFill = "checkmark.circle.fill"
@@ -20,7 +26,7 @@ public enum AppSymbol: String, Sendable, CaseIterable {
     case magnifyingglass = "magnifyingglass"
     case arrowClockwise = "arrow.clockwise"
     case arrowUpArrowDown = "arrow.up.arrow.down"
-    
+
     // Actions & Media
     case squareAndArrowUp = "square.and.arrow.up"
     case squareAndArrowDown = "square.and.arrow.down"
@@ -39,7 +45,7 @@ public enum AppSymbol: String, Sendable, CaseIterable {
     case photoBadgeCheckmarkFill = "photo.badge.checkmark.fill"
     case quoteOpening = "quote.opening"
     case sparkles = "sparkles"
-    
+
     // Status & System
     case wifi = "wifi"
     case wifiSlash = "wifi.slash"
@@ -51,7 +57,7 @@ public enum AppSymbol: String, Sendable, CaseIterable {
     case bell = "bell"
     case bellBadgeFill = "bell.badge.fill"
     case gearshape = "gearshape"
-    
+
     // Domain & Content
     case heart = "heart"
     case heartFill = "heart.fill"
@@ -69,13 +75,13 @@ public enum AppSymbol: String, Sendable, CaseIterable {
     case appleLogo = "apple.logo"
     case envelope = "envelope"
     case handRaised = "hand.raised"
-    
+
     // User & Account
     case person = "person"
     case personCropCircle = "person.crop.circle"
     case personCropCircleBadgeExclamationmark = "person.crop.circle.badge.exclamationmark"
     case rectanglePortraitAndArrowRight = "rectangle.portrait.and.arrow.right"
-    
+
     // Layout & Display
     case squareGrid2x2 = "square.grid.2x2"
     case listBullet = "list.bullet"
@@ -181,6 +187,18 @@ public struct SymbolTheme: Sendable, Equatable {
     public var circleLefthalfFilled: AppSymbol = .circleLefthalfFilled
     public var circle: AppSymbol = .circle
     public var largecircleFillCircle: AppSymbol = .largecircleFillCircle
+
+    public var eye: AppSymbol = .eye
+
+    public var eyeSlash: AppSymbol = .eyeSlash
+
+    public var star: AppSymbol = .star
+
+    public var starFill: AppSymbol = .starFill
+
+    public var checkmarkSquare: AppSymbol = .checkmarkSquare
+
+    public var square: AppSymbol = .square
 
     public init() {}
 

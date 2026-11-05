@@ -578,8 +578,8 @@ extension View {
         spacingTheme: SpacingTheme = .default
     ) -> some View {
         let base = colorTheme[keyPath: color]
-        let resolved = opacity != nil ? base.opacity(opacityTheme[keyPath: opacity!]) : base
-        let resolvedY = y != nil ? spacingTheme[keyPath: y!] : 0
+        let resolved = opacity.map { base.opacity(opacityTheme[keyPath: $0]) } ?? base
+        let resolvedY: CGFloat = y.map { spacingTheme[keyPath: $0] } ?? 0
         return self.shadow(color: resolved, radius: spacingTheme[keyPath: radius], x: x, y: resolvedY)
     }
 
@@ -714,7 +714,7 @@ private struct TokenForegroundColorModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         let base = theme.colors[keyPath: keyPath]
-        let resolved = opacity != nil ? base.opacity(theme.opacity[keyPath: opacity!]) : base
+        let resolved = opacity.map { base.opacity(theme.opacity[keyPath: $0]) } ?? base
         content.foregroundColor(resolved)
     }
 }
@@ -726,7 +726,7 @@ private struct TokenTintModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         let base = theme.colors[keyPath: keyPath]
-        let resolved = opacity != nil ? base.opacity(theme.opacity[keyPath: opacity!]) : base
+        let resolved = opacity.map { base.opacity(theme.opacity[keyPath: $0]) } ?? base
         content.tint(resolved)
     }
 }
@@ -739,7 +739,7 @@ private struct TokenBackgroundColorModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         let base = theme.colors[keyPath: keyPath]
-        let resolved = opacity != nil ? base.opacity(theme.opacity[keyPath: opacity!]) : base
+        let resolved = opacity.map { base.opacity(theme.opacity[keyPath: $0]) } ?? base
         if let edges = ignoresSafeAreaEdges {
             content.background(resolved.ignoresSafeArea(edges: edges))
         } else {
@@ -759,7 +759,7 @@ extension Shape {
         opacityTheme: OpacityTheme = .default
     ) -> some View {
         let base = colorTheme[keyPath: colorKeyPath]
-        let resolved = opacity != nil ? base.opacity(opacityTheme[keyPath: opacity!]) : base
+        let resolved = opacity.map { base.opacity(opacityTheme[keyPath: $0]) } ?? base
         return self.fill(resolved)
     }
 
@@ -773,7 +773,7 @@ extension Shape {
         strokeWidthTheme: StrokeWidthTheme = .default
     ) -> some View {
         let base = colorTheme[keyPath: colorKeyPath]
-        let resolved = opacity != nil ? base.opacity(opacityTheme[keyPath: opacity!]) : base
+        let resolved = opacity.map { base.opacity(opacityTheme[keyPath: $0]) } ?? base
         return self.stroke(resolved, lineWidth: strokeWidthTheme[keyPath: lineWidth])
     }
 }
