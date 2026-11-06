@@ -125,4 +125,37 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertNotNil(colors.accentMint)
         XCTAssertNotNil(colors.accentSunset)
     }
+
+    func testAppBrandPalettesAndRoles() {
+        XCTAssertEqual(AppBrand.allCases.count, 3)
+        for brand in AppBrand.allCases {
+            let palette = brand.palette
+            XCTAssertNotNil(palette.action)
+            XCTAssertNotNil(palette.onAction)
+            XCTAssertNotNil(palette.background)
+            XCTAssertNotNil(palette.surface)
+            XCTAssertNotNil(palette.border)
+            XCTAssertNotNil(palette.text)
+            XCTAssertNotNil(palette.mutedText)
+            XCTAssertNotNil(palette.error)
+            XCTAssertNotNil(palette.warning)
+            XCTAssertNotNil(palette.success)
+            XCTAssertNotNil(palette.authAction)
+            XCTAssertNotNil(palette.authOnAction)
+            XCTAssertNotNil(palette.authBackground)
+            XCTAssertNotNil(palette.authForeground)
+        }
+        XCTAssertEqual(BrandPalette.palette(for: .showBook), BrandPalette.showBook)
+        XCTAssertEqual(BrandPalette.palette(for: .myTV), BrandPalette.myTV)
+        XCTAssertEqual(BrandPalette.palette(for: .motivationDaily), BrandPalette.motivationDaily)
+    }
+
+    func testPlaceholderColorTokens() {
+        XCTAssertNotNil(PlaceholderColorToken.gradientStart)
+        XCTAssertNotNil(PlaceholderColorToken.gradientEnd)
+        #if canImport(UIKit)
+        XCTAssertNotNil(PlaceholderColorToken.uiGradientStart)
+        XCTAssertNotNil(PlaceholderColorToken.uiGradientEnd)
+        #endif
+    }
 }
