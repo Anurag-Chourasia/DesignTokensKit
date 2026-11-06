@@ -191,4 +191,13 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertEqual(paletteColors.surface, BrandPalette.myTV.surface)
         XCTAssertEqual(paletteColors.border, BrandPalette.myTV.border)
     }
+
+    func testAppBrandCurrentAndDynamicResolution() {
+        XCTAssertNotNil(AppBrand.current)
+        XCTAssertEqual(BrandPalette.current, BrandPalette.palette(for: AppBrand.current))
+        let defaultTheme = ColorTheme.default
+        XCTAssertEqual(defaultTheme.action, BrandPalette.current.action)
+        XCTAssertEqual(defaultTheme.surface, BrandPalette.current.surface)
+        XCTAssertEqual(defaultTheme.border, BrandPalette.current.border)
+    }
 }

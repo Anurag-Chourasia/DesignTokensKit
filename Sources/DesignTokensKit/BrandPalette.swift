@@ -16,10 +16,27 @@ public enum AppBrand: String, CaseIterable, Identifiable, Sendable {
     public var palette: BrandPalette {
         BrandPalette.palette(for: self)
     }
+
+    /// Automatically infers the active application brand from the main bundle identifier,
+    /// defaulting to `.myTV` if no specific host pattern is matched.
+    public static var current: AppBrand {
+        let identifier = (Bundle.main.bundleIdentifier ?? "").lowercased()
+        if identifier.contains("showbook") {
+            return .showBook
+        } else if identifier.contains("motivation") {
+            return .motivationDaily
+        } else {
+            return .myTV
+        }
+    }
 }
 
 /// Canonical brand and auth color roles. DesignTokensKit owns runtime brand values.
 public struct BrandPalette: Sendable, Equatable {
+    /// Active brand palette inferred from the current application context.
+    public static var current: BrandPalette {
+        BrandPalette.palette(for: AppBrand.current)
+    }
     public let action: Color
     public let onAction: Color
     public let background: Color

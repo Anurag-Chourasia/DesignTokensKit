@@ -427,11 +427,11 @@ public struct ColorTheme: Sendable, Equatable {
         accentOcean: Color = DesignColor.accentOcean,
         accentMint: Color = DesignColor.accentMint,
         accentSunset: Color = DesignColor.accentSunset,
-        action: Color = BrandPalette.myTV.action,
-        onAction: Color = BrandPalette.myTV.onAction,
-        background: Color = BrandPalette.myTV.background,
-        surface: Color = BrandPalette.myTV.surface,
-        border: Color = BrandPalette.myTV.border
+        action: Color = BrandPalette.current.action,
+        onAction: Color = BrandPalette.current.onAction,
+        background: Color = BrandPalette.current.background,
+        surface: Color = BrandPalette.current.surface,
+        border: Color = BrandPalette.current.border
     ) {
         self.primary = primary
         self.secondary = secondary
@@ -483,7 +483,9 @@ public struct ColorTheme: Sendable, Equatable {
         ColorTheme(brand: brand)
     }
 
-    public static let `default` = ColorTheme()
+    public static var `default`: ColorTheme {
+        ColorTheme(brand: .current)
+    }
 }
 
 // MARK: - Root DesignTokensTheme
@@ -530,13 +532,17 @@ public struct DesignTokensTheme: Sendable, Equatable {
         DesignTokensTheme(brand: brand)
     }
 
-    public static let `default` = DesignTokensTheme()
+    public static var `default`: DesignTokensTheme {
+        DesignTokensTheme(brand: .current)
+    }
 }
 
 // MARK: - SwiftUI Environment Integration
 
 private struct DesignTokensThemeKey: EnvironmentKey {
-    static let defaultValue: DesignTokensTheme = .default
+    static var defaultValue: DesignTokensTheme {
+        .default
+    }
 }
 
 extension EnvironmentValues {
