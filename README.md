@@ -1,167 +1,239 @@
 # DesignTokensKit
 
-Design system primitives and geometric design tokens for scalable, multi-app SwiftUI architectures across Anurag Chourasia's portfolio applications (ShowBook, MyTV).
+Design system primitives, geometric design tokens, tokenized iconography, and brand-agnostic color themes for scalable multi-app SwiftUI architectures across the iOS portfolio (**ShowBook**, **myTV**, and **Motivation Daily**).
 
 ![Platform](https://img.shields.io/badge/Platform-iOS%2016.0%2B%20%7C%20macOS%2014.0%2B-blue)
 ![Swift](https://img.shields.io/badge/Swift-6.0%2B-orange)
-![Toolchain](https://img.shields.io/badge/Xcode-27.0-purple)
+![Toolchain](https://img.shields.io/badge/Xcode-27.1-purple)
 ![CI](https://img.shields.io/badge/CI-Passing-brightgreen)
 ![SwiftLint](https://img.shields.io/badge/SwiftLint-0.65.1%20Strict-green)
+![Version](https://img.shields.io/badge/Release-v1.22.3-blueviolet)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
 ---
 
-## Architecture
+## 1. Executive Summary & Purpose
+
+`DesignTokensKit` serves as the single source of visual truth across the application portfolio. Rather than hardcoding colors, point dimensions, corner radii, or raw SF Symbol strings in application views, applications and shared UI packages consume strongly typed tokens.
+
+### Key Engineering Objectives:
+- **Zero Raw Color Literals**: Prevents hardcoded hex/RGB values in feature modules, ensuring consistent dark/light mode adaptation and dynamic accessibility high-contrast support.
+- **Brand Palette & Keypath Support**: Applications declare their visual identity via `BrandPalette` and customize themes using Swift KeyPaths (`\BrandPalette.myTV.accent`).
+- **Tokenized SF Symbols**: Encapsulates system symbol names in typed enums (`DesignSystemSymbol`), guaranteeing valid icons and preventing typo regressions.
+- **Strict Concurrency Compliance**: Built with `-strict-concurrency=complete`. All tokens and themes conform to `Sendable`.
+
+---
+
+## 2. Architecture & Design Principles
 
 ```mermaid
 flowchart TD
-    AppTheme["App Theme / Appearance Policy (ShowBook / MyTV)"] --> Tokens["DesignTokensKit"]
-    Tokens --> Spacing["Spacing & Layout Primitives"]
-    Tokens --> Geometry["CornerRadius & StrokeWidth"]
-    Tokens --> Accessibility["TouchTarget (44pt Accessible)"]
-    Tokens --> Semantic["SemanticColors (Dynamic Theme)"]
+    App["Host Apps (ShowBook / myTV / Motivation Daily)"] --> ColorTheme["ColorTheme (Injected / Environment)"]
+    ColorTheme --> BrandPalette["BrandPalette (myTV / showBook / motivationDaily)"]
+    ColorTheme --> Semantic["SemanticColors (Dynamic Theme Roles)"]
+    Tokens["DesignTokensKit"] --> Spacing["Spacing (four, eight, twelve, sixteen, twentyfour...)"]
+    Tokens --> CornerRadius["CornerRadius (four, eight, twelve, sixteen, twenty...)"]
+    Tokens --> TouchTarget["TouchTarget (minimum 44pt HIG)"]
+    Tokens --> Symbols["DesignSystemSymbol (Tokenized SF Symbols)"]
     Tokens --> Metrics["SurfaceMetrics & ButtonMetrics"]
-    Tokens --> Catalog["CatalogTokens (Grid/List & Metrics)"]
-    Metrics --> Consumer["UIComponentsKit / Feature Views"]
+    Tokens --> Catalog["CatalogTokens (Grid/List Spacing & Aspect Ratios)"]
+    Tokens --> Consumer["UIComponentsKit / Feature Screens"]
 ```
 
-`DesignTokensKit` provides the foundation for user interface consistency while respecting the following architectural tenets:
-1. **App Ownership of Appearance**: The library does not impose global themes or singletons; each application defines its own branding by configuring token instances.
-2. **Zero Sampling & Full Dynamism**: Colors are stored as native SwiftUI `Color` instances without conversion to static RGB, preserving automatic Light/Dark mode and high contrast adaptation.
-3. **Exact Point Geometry**: Standardized point scales eliminate magic numbers and ad-hoc padding across views.
-4. **Accessible by Default**: Implements Human Interface Guidelines floors, such as `TouchTarget.minimum` (44pt) for interactive elements.
+### Architectural Tenets:
+1. **Dynamic Color Adaptation**: Colors are stored as native SwiftUI `Color` instances without conversion to static RGB, preserving automatic Light/Dark mode and high contrast adaptation.
+2. **Accessible by Default**: Implements Human Interface Guidelines floors, such as `TouchTarget.minimum` (44pt) for all interactive surfaces.
+3. **Keypath-Driven Customization**: Views can customize semantic roles via Swift KeyPaths without duplicating full palette definitions.
+4. **Zero Upstream Dependencies**: Self-contained package depending solely on Apple system frameworks (`SwiftUI`, `Foundation`).
 
 ---
 
-## Use Cases
+## 3. Dependency Graph & Consumer Matrix
 
-- **Design System Consistency**: Share standardized spacing, corners, and button geometries across multiple standalone apps (e.g., ShowBook and MyTV) without code duplication.
-- **Dynamic Theming & Appearance Adaptation**: Build custom components that effortlessly transition between Light Mode, Dark Mode, and high-contrast environments.
-- **Accessible Touch Target Enforcement**: Guarantee that all touchable components meet accessibility guidelines (minimum 44x44 pt hit areas).
-- **Reusable Component Foundations**: Power higher-level UI packages such as `UIComponentsKit` and `DeveloperProfileKit`.
+| Direction | Package / Project | Responsibility |
+|---|---|---|
+| **Upstream Dependencies** | *None* | Depends purely on Apple system frameworks (`SwiftUI`, `Foundation`). |
+| **Downstream Consumers** | **UIComponentsKit** | Reusable controls consume `Spacing`, `CornerRadius`, `TouchTarget`, and `SemanticColors`. |
+| | **AuthKitUI** | Authentication screens consume brand palettes and button metrics. |
+| | **DeveloperProfileKit** | Developer profile and social link cards consume typography and tokenized symbols. |
+| | **ShowBook** | Book catalog, search filters, and detail views consume `BrandPalette.showBook`. |
+| | **myTV** | Channel tiles, player controls, and menus consume `BrandPalette.myTV`. |
+| | **Motivation Daily** | Quote card studio, wallpaper browser, and category pills consume `BrandPalette.motivationDaily`. |
 
 ---
 
-## Practical Code Examples
+## 4. API Contracts & Practical Code Examples
 
-### 1. Applying Spacing and Corner Radius
-
+### 1. Resolving Themes with Brand Keypaths
 ```swift
 import SwiftUI
 import DesignTokensKit
 
-struct InfoCardView: View {
+struct ThemedCardView: View {
+    // Injected or resolved via environment
+    let theme: ColorTheme = .current
+
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.eight) {
-            Text("Featured Article")
+            Text("Featured Content")
                 .font(.headline)
-            Text("Discover the latest design trends and architectural insights.")
+                .foregroundColor(theme.colors.textPrimary)
+
+            Text("Dynamic brand-aware subtitle")
                 .font(.subheadline)
-                .foregroundColor(.secondary)
+                .foregroundColor(theme.colors.textSecondary)
         }
         .padding(Spacing.sixteen)
-        .background(Color(.secondarySystemBackground))
+        .background(theme.colors.surface)
         .cornerRadius(CornerRadius.twelve)
     }
 }
 ```
 
-### 2. Semantic Colors & Surface Metrics
-
+### 2. Tokenized SF Symbols
 ```swift
 import SwiftUI
 import DesignTokensKit
 
-struct ThemedBanner: View {
-    let metrics = SurfaceMetrics(
-        cornerRadius: CornerRadius.sixteen,
-        borderWidth: StrokeWidth.one
-    )
-    let colors = SemanticColors(
-        surface: Color(.systemBackground),
-        foreground: Color.primary,
-        border: Color(.separator),
-        action: Color.accentColor,
-        onAction: Color.white
-    )
-
+struct NavigationControls: View {
     var body: some View {
-        HStack {
-            Text("Status Update")
-                .foregroundColor(colors.foreground)
-            Spacer()
-            Button("Dismiss") {}
-                .foregroundColor(colors.action)
+        HStack(spacing: Spacing.twelve) {
+            Button(action: { /* dismiss */ }) {
+                Image(symbol: .close)
+                    .frame(minWidth: TouchTarget.minimum, minHeight: TouchTarget.minimum)
+            }
+
+            Button(action: { /* share */ }) {
+                Image(symbol: .share)
+                    .frame(minWidth: TouchTarget.minimum, minHeight: TouchTarget.minimum)
+            }
         }
-        .padding(metrics.padding)
-        .background(colors.surface)
-        .overlay(
-            RoundedRectangle(cornerRadius: metrics.cornerRadius)
-                .stroke(colors.border, lineWidth: metrics.borderWidth)
-        )
     }
 }
 ```
 
-### 3. Accessible Button Metrics
-
+### 3. Accessible Layout and Button Metrics
 ```swift
 import SwiftUI
 import DesignTokensKit
 
-struct ActionButton: View {
+struct PrimaryActionButton: View {
     let title: String
     let action: () -> Void
-
-    private let metrics = ButtonMetrics(
-        cornerRadius: CornerRadius.twenty,
-        minimumSize: CGSize(width: TouchTarget.minimum, height: TouchTarget.minimum)
-    )
 
     var body: some View {
         Button(action: action) {
             Text(title)
-                .padding(metrics.padding)
-                .frame(minWidth: metrics.minimumSize.width, minHeight: metrics.minimumSize.height)
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(metrics.cornerRadius)
+                .font(.headline)
+                .frame(maxWidth: .infinity)
+                .frame(height: ButtonMetrics.primaryHeight) // Standard 50pt height
         }
+        .background(BrandPalette.current.accent)
+        .foregroundColor(.white)
+        .cornerRadius(CornerRadius.eight)
+        .frame(minWidth: TouchTarget.minimum, minHeight: TouchTarget.minimum)
     }
 }
 ```
 
 ---
 
-## Release Version Controlling
+## 5. Verification & Testing
 
-`DesignTokensKit` adheres strictly to [Semantic Versioning (SemVer 2.0.0)](https://semver.org/spec/v2.0.0.html):
+The package includes exhaustive unit tests verifying palette integrity, keypath resolution, symbol lookup, and accessibility bounds.
 
-| Release Level | Criteria | Example Tag |
-| :--- | :--- | :--- |
-| **MAJOR** (`X.0.0`) | Breaking public API changes, removed token definitions | `v2.0.0` |
-| **MINOR** (`1.X.0`) | New tokens, additional geometry primitives, enhanced metrics | `v1.2.0` |
-| **PATCH** (`1.2.X`) | Bug fixes, internal performance, documentation corrections | `v1.2.1` |
+```sh
+# Run tests locally
+swift test
 
-- **Changelog Maintenance**: Every release candidate is documented in [CHANGELOG.md](CHANGELOG.md).
-- **Tagging Convention**: All release tags are prefixed with `v` (e.g. `v1.2.0`).
-- **Validation**: Verified locally and in CI with `bash Scripts/verify-release-version.sh`.
-- **SPM Integration**:
-  ```swift
-  .package(url: "https://github.com/Anurag-Chourasia/DesignTokensKit.git", exact: "1.2.0")
-  ```
+# Validate architectural boundaries and symbol tokenization
+python3 /path/to/UIComponentsKit/Scripts/check_architecture.py --workspace-root /path/to/Projects
+```
 
 ---
 
-## Quality & CI Verification
+## 6. End-to-End Ecosystem Connectivity
 
-All changes must pass automated pre-merge gates in GitHub Actions:
+```mermaid
+graph TD
+    subgraph CoreServices ["Shared Core Services (SPMs)"]
+        FoundationKit["FoundationKit<br/>(System Clock, Unified Logging, Thread Safety)"]
+        LocalisationKit["LocalisationKit<br/>(Typed Strings, Pluralization, String Catalogs)"]
+        DesignTokensKit["DesignTokensKit<br/>(BrandPalettes, ColorTheme, Typography, Metrics, SF Symbols)"]
+        CommonNetworkingKit["CommonNetworkingKit<br/>(HTTPClient, URLSession, RequestBuilder, Interceptors)"]
+        AppStubData["AppStubData<br/>(Synthetic Fixtures, Offline Catalogs, Test Scenarios)"]
+    end
 
-1. **SwiftLint Verification**:
-   - Enforces the organization's pinned 24-rule policy (`.swiftlint.yml`, SwiftLint 0.65.1).
-   - Strict mode enabled (`--strict`, no warnings allowed).
-   - Run locally: `bash Scripts/lint.sh`.
-2. **Build and Test Verification**:
-   - Compiles with complete strict concurrency (`-strict-concurrency=complete`) and `-warnings-as-errors`.
-   - Host unit tests verifying scalar metrics, color resolution, and layout presets.
-   - iOS Simulator build validation via `xcodebuild`.
+    subgraph UIServices ["Shared Presentation & Auth (SPMs)"]
+        UIComponentsKit["UIComponentsKit<br/>(CatalogTile, SurfaceCard, StateMessage, Recipes)"]
+        AuthKit["AuthKit & AuthKitUI<br/>(SessionManager, AppAuthGate, AccountToolbarItem)"]
+        DeveloperProfileKit["DeveloperProfileKit<br/>(DeveloperProfileView, Runtime Overlays)"]
+        SnapshotTestingKit["SnapshotTestingKit<br/>(Subpixel Comparison, Golden Baseline Engine)"]
+    end
+
+    subgraph HostApps ["Host Applications"]
+        ShowBook["ShowBook<br/>(Book Discovery, Core Data Persistence, Open Library)"]
+        MyTV["myTV<br/>(IPTV Browser, AVPlayer Lifecycle, Directory Cache)"]
+        MotivationDaily["Motivation Daily<br/>(Card Feed, Quote Persistence, Image Export Studio)"]
+    end
+
+    subgraph QualityGates ["CI/CD Automation & Tooling"]
+        ArchitectureGuard["check_architecture.py<br/>(Boundary Enforcement, Zero Token Leakage)"]
+        SnapshotVerifier["verify-snapshot-baselines.py<br/>(Visual Regression Gate)"]
+        GHActions["GitHub Actions CI<br/>(Fast Lane, Smoke Lane, Release Build Verification)"]
+    end
+
+    %% Dependencies between Shared SPMs
+    DesignTokensKit --> UIComponentsKit
+    LocalisationKit --> UIComponentsKit
+    DesignTokensKit --> AuthKit
+    UIComponentsKit --> AuthKit
+    FoundationKit --> CommonNetworkingKit
+    DesignTokensKit --> DeveloperProfileKit
+    UIComponentsKit --> DeveloperProfileKit
+    LocalisationKit --> DeveloperProfileKit
+
+    %% Dependencies from Host Apps to Shared SPMs
+    DesignTokensKit --> ShowBook
+    UIComponentsKit --> ShowBook
+    AuthKit --> ShowBook
+    CommonNetworkingKit --> ShowBook
+    DeveloperProfileKit --> ShowBook
+    AppStubData --> ShowBook
+
+    DesignTokensKit --> MyTV
+    UIComponentsKit --> MyTV
+    AuthKit --> MyTV
+    CommonNetworkingKit --> MyTV
+    DeveloperProfileKit --> MyTV
+    AppStubData --> MyTV
+
+    DesignTokensKit --> MotivationDaily
+    UIComponentsKit --> MotivationDaily
+    AuthKit --> MotivationDaily
+    CommonNetworkingKit --> MotivationDaily
+    DeveloperProfileKit --> MotivationDaily
+    AppStubData --> MotivationDaily
+
+    %% Testing & Verification Linkage
+    SnapshotTestingKit -.-> ShowBook
+    SnapshotTestingKit -.-> MyTV
+    SnapshotTestingKit -.-> MotivationDaily
+
+    ArchitectureGuard --> HostApps
+    ArchitectureGuard --> CoreServices
+    ArchitectureGuard --> UIServices
+    SnapshotVerifier --> SnapshotTestingKit
+    GHActions --> HostApps
+    GHActions --> UIServices
+    GHActions --> CoreServices
+```
+
+---
+
+## 7. Canonical Notion Dashboards & Governance Links
+
+- [iOS Portfolio — Engineering Tickets Dashboard](https://app.notion.com/p/c20d7f4b133b44499c8ac0b4d5f6249e?pvs=204)
+- [iOS Portfolio — Master Document](https://app.notion.com/p/40ffa5f855b98192ad2ede66a5d36fe7)
+- [Architecture Boundary Validator (`check_architecture.py`)](file:///Users/anuragchourasia/Desktop/Projects/UIComponentsKit/Scripts/check_architecture.py)
+- [Release & Gate Policy Documentation (`Docs/MASTER.md`)](file:///Users/anuragchourasia/Desktop/Projects/Docs/MASTER.md)
