@@ -157,7 +157,7 @@ public struct BrandPalette: Sendable, Equatable {
         ),
         surface: Color.dynamic(
             light: Color.white,
-            dark: Color(.sRGB, red: 0.08235294117647059, green: 0.11372549019607843, blue: 0.1803921568627451, opacity: 1.0)
+            dark: Color(.sRGB, red: 0.06666666666666667, green: 0.09411764705882353, blue: 0.15294117647058825, opacity: 1.0)
         ),
         border: Color.dynamic(
             light: Color(.sRGB, red: 0.8196078431372549, green: 0.8352941176470589, blue: 0.8588235294117647, opacity: 1.0),
