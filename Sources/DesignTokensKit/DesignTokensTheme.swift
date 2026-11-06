@@ -484,7 +484,7 @@ public struct ColorTheme: Sendable, Equatable {
     }
 
     public static var `default`: ColorTheme {
-        ColorTheme(brand: .current)
+        ColorTheme()
     }
 }
 
@@ -533,7 +533,7 @@ public struct DesignTokensTheme: Sendable, Equatable {
     }
 
     public static var `default`: DesignTokensTheme {
-        DesignTokensTheme(brand: .current)
+        DesignTokensTheme(colors: .default)
     }
 }
 
