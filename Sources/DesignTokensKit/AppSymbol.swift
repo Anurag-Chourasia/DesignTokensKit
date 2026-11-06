@@ -237,7 +237,7 @@ extension Label where Title == Text, Icon == Image {
         self.init {
             title
         } icon: {
-            Image(theme[keyPath: keyPath].systemName)
+            Image(systemName: theme[keyPath: keyPath].systemName)
         }
     }
 
@@ -254,7 +254,7 @@ extension Label where Title == Text, Icon == Image {
         self.init {
             title
         } icon: {
-            Image(theme[keyPath: keyPath].systemName)
+            Image(systemName: theme[keyPath: keyPath].systemName)
         }
     }
 
@@ -270,7 +270,7 @@ extension Label where Title == Text, Icon == Image {
         self.init {
             title
         } icon: {
-            Image(symbol.systemName)
+            Image(systemName: symbol.systemName)
         }
     }
 }
