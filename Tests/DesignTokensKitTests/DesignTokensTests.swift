@@ -158,4 +158,37 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertNotNil(PlaceholderColorToken.uiGradientEnd)
         #endif
     }
+
+    func testColorThemeBrandKeyPaths() {
+        for brand in AppBrand.allCases {
+            let theme = ColorTheme(brand: brand)
+            let palette = brand.palette
+            XCTAssertEqual(theme[keyPath: \.action], palette.action)
+            XCTAssertEqual(theme[keyPath: \.brandAction], palette.action)
+            XCTAssertEqual(theme[keyPath: \.onAction], palette.onAction)
+            XCTAssertEqual(theme[keyPath: \.brandOnAction], palette.onAction)
+            XCTAssertEqual(theme[keyPath: \.background], palette.background)
+            XCTAssertEqual(theme[keyPath: \.brandBackground], palette.background)
+            XCTAssertEqual(theme[keyPath: \.surface], palette.surface)
+            XCTAssertEqual(theme[keyPath: \.brandSurface], palette.surface)
+            XCTAssertEqual(theme[keyPath: \.border], palette.border)
+            XCTAssertEqual(theme[keyPath: \.brandBorder], palette.border)
+            XCTAssertEqual(theme.primary, palette.text)
+            XCTAssertEqual(theme.secondary, palette.mutedText)
+            XCTAssertEqual(theme.accentColor, palette.action)
+        }
+        let rootTheme = DesignTokensTheme(brand: .myTV)
+        XCTAssertEqual(rootTheme.colors.action, BrandPalette.myTV.action)
+    }
+
+    func testSemanticColorsKeyPathAndPaletteInitializers() {
+        let keypathColors = SemanticColors(surface: \.surface, border: \.border)
+        XCTAssertNotNil(keypathColors.surface)
+        XCTAssertNotNil(keypathColors.border)
+
+        let paletteColors = SemanticColors(palette: BrandPalette.myTV)
+        XCTAssertEqual(paletteColors.action, BrandPalette.myTV.action)
+        XCTAssertEqual(paletteColors.surface, BrandPalette.myTV.surface)
+        XCTAssertEqual(paletteColors.border, BrandPalette.myTV.border)
+    }
 }

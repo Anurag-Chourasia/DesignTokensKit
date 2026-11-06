@@ -392,6 +392,18 @@ public struct ColorTheme: Sendable, Equatable {
     public var accentMint: Color
     public var accentSunset: Color
 
+    public var action: Color
+    public var onAction: Color
+    public var background: Color
+    public var surface: Color
+    public var border: Color
+
+    public var brandAction: Color { action }
+    public var brandOnAction: Color { onAction }
+    public var brandBackground: Color { background }
+    public var brandSurface: Color { surface }
+    public var brandBorder: Color { border }
+
     public init(
         primary: Color = DesignColor.primary,
         secondary: Color = DesignColor.secondary,
@@ -414,7 +426,12 @@ public struct ColorTheme: Sendable, Equatable {
         separator: Color = DesignColor.separator,
         accentOcean: Color = DesignColor.accentOcean,
         accentMint: Color = DesignColor.accentMint,
-        accentSunset: Color = DesignColor.accentSunset
+        accentSunset: Color = DesignColor.accentSunset,
+        action: Color = BrandPalette.myTV.action,
+        onAction: Color = BrandPalette.myTV.onAction,
+        background: Color = BrandPalette.myTV.background,
+        surface: Color = BrandPalette.myTV.surface,
+        border: Color = BrandPalette.myTV.border
     ) {
         self.primary = primary
         self.secondary = secondary
@@ -438,6 +455,32 @@ public struct ColorTheme: Sendable, Equatable {
         self.accentOcean = accentOcean
         self.accentMint = accentMint
         self.accentSunset = accentSunset
+        self.action = action
+        self.onAction = onAction
+        self.background = background
+        self.surface = surface
+        self.border = border
+    }
+
+    public init(palette: BrandPalette) {
+        self.init(
+            primary: palette.text,
+            secondary: palette.mutedText,
+            accentColor: palette.action,
+            action: palette.action,
+            onAction: palette.onAction,
+            background: palette.background,
+            surface: palette.surface,
+            border: palette.border
+        )
+    }
+
+    public init(brand: AppBrand) {
+        self.init(palette: BrandPalette.palette(for: brand))
+    }
+
+    public static func theme(for brand: AppBrand) -> ColorTheme {
+        ColorTheme(brand: brand)
     }
 
     public static let `default` = ColorTheme()
@@ -473,6 +516,18 @@ public struct DesignTokensTheme: Sendable, Equatable {
         self.opacity = opacity
         self.symbols = symbols
         self.colors = colors
+    }
+
+    public init(brand: AppBrand) {
+        self.init(colors: ColorTheme(brand: brand))
+    }
+
+    public init(palette: BrandPalette) {
+        self.init(colors: ColorTheme(palette: palette))
+    }
+
+    public static func theme(for brand: AppBrand) -> DesignTokensTheme {
+        DesignTokensTheme(brand: brand)
     }
 
     public static let `default` = DesignTokensTheme()

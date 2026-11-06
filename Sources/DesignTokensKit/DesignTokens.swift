@@ -92,6 +92,29 @@ public struct SemanticColors: Sendable {
         self.action = action
         self.onAction = onAction
     }
+
+    public init(
+        surface: KeyPath<ColorTheme, Color>? = nil,
+        foreground: KeyPath<ColorTheme, Color>? = nil,
+        border: KeyPath<ColorTheme, Color>? = nil,
+        action: KeyPath<ColorTheme, Color>? = nil,
+        onAction: KeyPath<ColorTheme, Color>? = nil,
+        theme: ColorTheme = .default
+    ) {
+        self.surface = surface.map { theme[keyPath: $0] } ?? .clear
+        self.foreground = foreground.map { theme[keyPath: $0] } ?? .primary
+        self.border = border.map { theme[keyPath: $0] } ?? .clear
+        self.action = action.map { theme[keyPath: $0] } ?? theme.action
+        self.onAction = onAction.map { theme[keyPath: $0] } ?? theme.onAction
+    }
+
+    public init(palette: BrandPalette) {
+        self.surface = palette.surface
+        self.foreground = palette.text
+        self.border = palette.border
+        self.action = palette.action
+        self.onAction = palette.onAction
+    }
 }
 
 /// Geometry owned by an individual surface, rather than one universal card radius.
