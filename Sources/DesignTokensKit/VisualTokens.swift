@@ -76,8 +76,14 @@ public enum OpacityToken {
 }
 
 public enum ScaleToken {
+    public static let p0_8: CGFloat = 0.8
+    public static let p0_9: CGFloat = 0.9
+    public static let p0_95: CGFloat = 0.95
     public static let p1_0: CGFloat = 1.0
+    public static let p1_05: CGFloat = 1.05
+    public static let p1_1: CGFloat = 1.1
     public static let p1_15: CGFloat = 1.15
+    public static let p1_2: CGFloat = 1.2
 }
 
 public enum TextLineLimit {

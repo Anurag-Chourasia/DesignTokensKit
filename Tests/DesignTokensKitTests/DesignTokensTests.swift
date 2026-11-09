@@ -200,4 +200,93 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertEqual(defaultTheme.surface, BrandPalette.current.surface)
         XCTAssertEqual(defaultTheme.border, BrandPalette.current.border)
     }
+
+    func testScaleTokensAndTheme() {
+        XCTAssertEqual(ScaleToken.p0_8, 0.8)
+        XCTAssertEqual(ScaleToken.p0_9, 0.9)
+        XCTAssertEqual(ScaleToken.p0_95, 0.95)
+        XCTAssertEqual(ScaleToken.p1_0, 1.0)
+        XCTAssertEqual(ScaleToken.p1_05, 1.05)
+        XCTAssertEqual(ScaleToken.p1_1, 1.1)
+        XCTAssertEqual(ScaleToken.p1_15, 1.15)
+        XCTAssertEqual(ScaleToken.p1_2, 1.2)
+
+        let theme = ScaleTheme.default
+        XCTAssertEqual(theme[keyPath: \.p0_8], 0.8)
+        XCTAssertEqual(theme[keyPath: \.p0_9], 0.9)
+        XCTAssertEqual(theme[keyPath: \.p0_95], 0.95)
+        XCTAssertEqual(theme[keyPath: \.p1_0], 1.0)
+        XCTAssertEqual(theme[keyPath: \.p1_05], 1.05)
+        XCTAssertEqual(theme[keyPath: \.p1_1], 1.1)
+        XCTAssertEqual(theme[keyPath: \.p1_15], 1.15)
+        XCTAssertEqual(theme[keyPath: \.p1_2], 1.2)
+
+        let customTheme = ScaleTheme(p0_8: 0.75, p1_0: 1.0)
+        XCTAssertEqual(customTheme.p0_8, 0.75)
+        XCTAssertEqual(customTheme.p1_0, 1.0)
+
+        let rootTheme = DesignTokensTheme()
+        XCTAssertEqual(rootTheme.scale, ScaleTheme.default)
+    }
+
+    @MainActor
+    func testScaleEffectKeyPathModifiers() {
+        func scaleKeyPath(favorite: Bool) -> KeyPath<ScaleTheme, CGFloat> {
+            favorite ? \.p1_15 : \.p1_0
+        }
+        let view = Text("Scale")
+            .scaleEffect(\.p1_15)
+            .scaleEffect(\.p1_0, anchor: .topLeading)
+            .scaleEffect(scaleKeyPath(favorite: true))
+            .scaleEffect(scaleKeyPath(favorite: false))
+            .scaleEffect(x: \.p1_15, y: \.p0_95, anchor: .center)
+            .scaleEffect(x: \.p1_0, y: nil)
+            .scaleEffect(x: nil, y: \.p1_15)
+            .environment(\.designTokens, DesignTokensTheme.default)
+        XCTAssertNotNil(view)
+    }
+
+    @MainActor
+    func testTintAndToggleStyleKeyPathModifiers() {
+        let view = Text("Tint")
+            .tint(\.action)
+            .tint(\.brandPrimary)
+            .tint(\.green, opacity: \.p0_8)
+            .environment(\.designTokens, DesignTokensTheme.default)
+        XCTAssertNotNil(view)
+
+        let toggleStyle1 = SwitchToggleStyle(tint: \.green)
+        XCTAssertNotNil(toggleStyle1)
+        let toggleStyle2 = SwitchToggleStyle(tint: \.brandPrimary, opacity: \.p0_8)
+        XCTAssertNotNil(toggleStyle2)
+
+        let colors = ColorTheme.default
+        XCTAssertEqual(colors.brandPrimary, colors.primary)
+        XCTAssertEqual(colors.brandSecondary, colors.secondary)
+    }
+
+    @MainActor
+    func testOpacityKeyPathModifiersAndColorExtensions() {
+        func opacityKeyPath(muted: Bool) -> KeyPath<OpacityTheme, Double> {
+            muted ? \.p0_3 : \.p1_0
+        }
+        let view = Text("Opacity")
+            .opacity(\.p0_8)
+            .opacity(opacityKeyPath(muted: true))
+            .opacity(opacityKeyPath(muted: false))
+            .environment(\.designTokens, DesignTokensTheme.default)
+        XCTAssertNotNil(view)
+
+        let semiTransparentRed = Color.red.opacity(\.p0_5)
+        XCTAssertNotNil(semiTransparentRed)
+    }
+
+    @MainActor
+    func testForegroundStyleKeyPathModifiers() {
+        let view = Text("ForegroundStyle")
+            .foregroundStyle(\.brandPrimary)
+            .foregroundStyle(\.action, opacity: \.p0_9)
+            .environment(\.designTokens, DesignTokensTheme.default)
+        XCTAssertNotNil(view)
+    }
 }

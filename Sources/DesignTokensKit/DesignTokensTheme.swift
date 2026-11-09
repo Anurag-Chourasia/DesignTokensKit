@@ -366,6 +366,41 @@ public struct OpacityTheme: Sendable, Equatable {
     public static let `default` = OpacityTheme()
 }
 
+// MARK: - Scale KeyPath Theme
+
+public struct ScaleTheme: Sendable, Equatable {
+    public let p0_8: CGFloat
+    public let p0_9: CGFloat
+    public let p0_95: CGFloat
+    public let p1_0: CGFloat
+    public let p1_05: CGFloat
+    public let p1_1: CGFloat
+    public let p1_15: CGFloat
+    public let p1_2: CGFloat
+
+    public init(
+        p0_8: CGFloat = ScaleToken.p0_8,
+        p0_9: CGFloat = ScaleToken.p0_9,
+        p0_95: CGFloat = ScaleToken.p0_95,
+        p1_0: CGFloat = ScaleToken.p1_0,
+        p1_05: CGFloat = ScaleToken.p1_05,
+        p1_1: CGFloat = ScaleToken.p1_1,
+        p1_15: CGFloat = ScaleToken.p1_15,
+        p1_2: CGFloat = ScaleToken.p1_2
+    ) {
+        self.p0_8 = p0_8
+        self.p0_9 = p0_9
+        self.p0_95 = p0_95
+        self.p1_0 = p1_0
+        self.p1_05 = p1_05
+        self.p1_1 = p1_1
+        self.p1_15 = p1_15
+        self.p1_2 = p1_2
+    }
+
+    public static let `default` = ScaleTheme()
+}
+
 // MARK: - Color KeyPath Theme
 
 public struct ColorTheme: Sendable, Equatable {
@@ -403,6 +438,8 @@ public struct ColorTheme: Sendable, Equatable {
     public var brandBackground: Color { background }
     public var brandSurface: Color { surface }
     public var brandBorder: Color { border }
+    public var brandPrimary: Color { primary }
+    public var brandSecondary: Color { secondary }
 
     public init(
         primary: Color = DesignColor.primary,
@@ -497,6 +534,7 @@ public struct DesignTokensTheme: Sendable, Equatable {
     public var cornerRadius: CornerRadiusTheme
     public var metric: DesignMetricTheme
     public var opacity: OpacityTheme
+    public var scale: ScaleTheme
     public var symbols: SymbolTheme
     public var colors: ColorTheme
 
@@ -507,6 +545,7 @@ public struct DesignTokensTheme: Sendable, Equatable {
         cornerRadius: CornerRadiusTheme = .default,
         metric: DesignMetricTheme = .default,
         opacity: OpacityTheme = .default,
+        scale: ScaleTheme = .default,
         symbols: SymbolTheme = .default,
         colors: ColorTheme = .default
     ) {
@@ -516,6 +555,7 @@ public struct DesignTokensTheme: Sendable, Equatable {
         self.cornerRadius = cornerRadius
         self.metric = metric
         self.opacity = opacity
+        self.scale = scale
         self.symbols = symbols
         self.colors = colors
     }
@@ -593,6 +633,20 @@ extension View {
         self.modifier(TokenOpacityModifier(keyPath: keyPath))
     }
 
+    /// Overload standard SwiftUI `scaleEffect` modifier using a ScaleTheme keypath: `.scaleEffect(\.p1_15)`
+    public func scaleEffect(_ keyPath: KeyPath<ScaleTheme, CGFloat>, anchor: UnitPoint = .center) -> some View {
+        self.modifier(TokenScaleModifier(keyPath: keyPath, anchor: anchor))
+    }
+
+    /// Overload standard SwiftUI `scaleEffect` modifier using separate x and y ScaleTheme keypaths
+    public func scaleEffect(
+        x: KeyPath<ScaleTheme, CGFloat>? = nil,
+        y: KeyPath<ScaleTheme, CGFloat>? = nil,
+        anchor: UnitPoint = .center
+    ) -> some View {
+        self.modifier(TokenScaleXYModifier(xKeyPath: x, yKeyPath: y, anchor: anchor))
+    }
+
     /// Overload standard SwiftUI `cornerRadius` modifier using a CornerRadiusTheme keypath: `.cornerRadius(\.twelve)`
     public func cornerRadius(_ keyPath: KeyPath<CornerRadiusTheme, CGFloat>) -> some View {
         self.modifier(TokenCornerRadiusModifier(keyPath: keyPath))
@@ -606,6 +660,11 @@ extension View {
     /// Overload standard SwiftUI `foregroundColor` modifier using a ColorTheme keypath: `.foregroundColor(\.white)`
     public func foregroundColor(_ keyPath: KeyPath<ColorTheme, Color>, opacity: KeyPath<OpacityTheme, Double>? = nil) -> some View {
         self.modifier(TokenForegroundColorModifier(keyPath: keyPath, opacity: opacity))
+    }
+
+    /// Overload standard SwiftUI `foregroundStyle` modifier using a ColorTheme keypath: `.foregroundStyle(\.brandPrimary)`
+    public func foregroundStyle(_ keyPath: KeyPath<ColorTheme, Color>, opacity: KeyPath<OpacityTheme, Double>? = nil) -> some View {
+        self.modifier(TokenForegroundStyleModifier(keyPath: keyPath, opacity: opacity))
     }
 
     /// Overload standard SwiftUI `tint` modifier using a ColorTheme keypath: `.tint(\.white)`
@@ -750,6 +809,29 @@ private struct TokenOpacityModifier: ViewModifier {
     }
 }
 
+private struct TokenScaleModifier: ViewModifier {
+    @Environment(\.designTokens) private var theme
+    let keyPath: KeyPath<ScaleTheme, CGFloat>
+    let anchor: UnitPoint
+
+    func body(content: Content) -> some View {
+        content.scaleEffect(theme.scale[keyPath: keyPath], anchor: anchor)
+    }
+}
+
+private struct TokenScaleXYModifier: ViewModifier {
+    @Environment(\.designTokens) private var theme
+    let xKeyPath: KeyPath<ScaleTheme, CGFloat>?
+    let yKeyPath: KeyPath<ScaleTheme, CGFloat>?
+    let anchor: UnitPoint
+
+    func body(content: Content) -> some View {
+        let x: CGFloat = xKeyPath.map { theme.scale[keyPath: $0] } ?? 1.0
+        let y: CGFloat = yKeyPath.map { theme.scale[keyPath: $0] } ?? 1.0
+        content.scaleEffect(x: x, y: y, anchor: anchor)
+    }
+}
+
 private struct TokenCornerRadiusModifier: ViewModifier {
     @Environment(\.designTokens) private var theme
     let keyPath: KeyPath<CornerRadiusTheme, CGFloat>
@@ -777,6 +859,18 @@ private struct TokenForegroundColorModifier: ViewModifier {
         let base = theme.colors[keyPath: keyPath]
         let resolved = opacity.map { base.opacity(theme.opacity[keyPath: $0]) } ?? base
         content.foregroundColor(resolved)
+    }
+}
+
+private struct TokenForegroundStyleModifier: ViewModifier {
+    @Environment(\.designTokens) private var theme
+    let keyPath: KeyPath<ColorTheme, Color>
+    let opacity: KeyPath<OpacityTheme, Double>?
+
+    func body(content: Content) -> some View {
+        let base = theme.colors[keyPath: keyPath]
+        let resolved = opacity.map { base.opacity(theme.opacity[keyPath: $0]) } ?? base
+        content.foregroundStyle(resolved)
     }
 }
 
@@ -994,5 +1088,28 @@ extension GridItem {
         alignment: Alignment? = nil
     ) {
         self.init(size, spacing: SpacingTheme.default[keyPath: spacing], alignment: alignment)
+    }
+}
+
+// MARK: - ToggleStyle KeyPath Tint Overloads
+
+extension SwitchToggleStyle {
+    public init(
+        tint keyPath: KeyPath<ColorTheme, Color>,
+        opacity: KeyPath<OpacityTheme, Double>? = nil,
+        theme: ColorTheme = .default,
+        opacityTheme: OpacityTheme = .default
+    ) {
+        let base = theme[keyPath: keyPath]
+        let resolved = opacity.map { base.opacity(opacityTheme[keyPath: $0]) } ?? base
+        self.init(tint: resolved)
+    }
+}
+
+// MARK: - Color KeyPath Opacity
+
+extension Color {
+    public func opacity(_ keyPath: KeyPath<OpacityTheme, Double>, theme: OpacityTheme = .default) -> Color {
+        self.opacity(theme[keyPath: keyPath])
     }
 }
