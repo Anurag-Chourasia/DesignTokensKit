@@ -289,4 +289,51 @@ final class DesignTokensTests: XCTestCase {
             .environment(\.designTokens, DesignTokensTheme.default)
         XCTAssertNotNil(view)
     }
+
+    @MainActor
+    func testFrameKeyPathModifiers() {
+        let view = Text("Frame")
+            .frame(size: \.s24)
+            .frame(size: \.twentyFour)
+            .frame(width: \.twentyFour, height: \.sixteen)
+            .frame(minWidth: \.four, idealWidth: \.twentyFour, maxWidth: \.thirtyTwo, minHeight: \.four, idealHeight: \.twentyFour, maxHeight: \.thirtyTwo)
+            .frame(width: \.s24, height: \.s16)
+            .frame(minWidth: \.s4, idealWidth: \.s24, maxWidth: \.s40, minHeight: \.s4, idealHeight: \.s24, maxHeight: \.s40)
+        XCTAssertNotNil(view)
+    }
+
+    @MainActor
+    func testOverlayStrokeModifiers() {
+        let view = Text("Stroke")
+            .overlayRoundedStroke(cornerRadius: \.twelve, color: \.border, lineWidth: \.one, opacity: \.p0_8)
+            .overlayRoundedStroke(cornerRadius: \.r12, color: \.border, lineWidth: \.two)
+            .overlayRoundedStroke(cornerRadius: \.p12, color: \.action, lineWidth: \.one)
+            .overlayCapsuleStroke(color: \.action, lineWidth: \.one, opacity: \.p0_9)
+            .environment(\.designTokens, DesignTokensTheme.default)
+        XCTAssertNotNil(view)
+    }
+
+    @MainActor
+    func testLayoutContainersWithDesignMetricSpacing() {
+        let vstack = VStack(spacing: \.s8) { Text("1") }
+        XCTAssertNotNil(vstack)
+
+        let hstack = HStack(spacing: \.s8) { Text("1") }
+        XCTAssertNotNil(hstack)
+
+        let lazyVStack = LazyVStack(spacing: \.s12) { Text("1") }
+        XCTAssertNotNil(lazyVStack)
+
+        let lazyHStack = LazyHStack(spacing: \.s12) { Text("1") }
+        XCTAssertNotNil(lazyHStack)
+
+        let gridItem = GridItem(.flexible(), spacing: \.s12)
+        XCTAssertNotNil(gridItem)
+
+        let lazyVGrid = LazyVGrid(columns: [gridItem], spacing: \.s12) { Text("1") }
+        XCTAssertNotNil(lazyVGrid)
+
+        let lazyHGrid = LazyHGrid(rows: [gridItem], spacing: \.s12) { Text("1") }
+        XCTAssertNotNil(lazyHGrid)
+    }
 }

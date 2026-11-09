@@ -98,6 +98,12 @@ public struct SpacingTheme: Sendable, Equatable {
     }
 
     public static let `default` = SpacingTheme()
+
+    // MARK: - Ergonomic Semantic Aliases
+    public var small: CGFloat { eight }
+    public var medium: CGFloat { sixteen }
+    public var large: CGFloat { twentyFour }
+    public var extraLarge: CGFloat { thirtyTwo }
 }
 
 // MARK: - StrokeWidth KeyPath Theme
@@ -156,6 +162,19 @@ public struct CornerRadiusTheme: Sendable, Equatable {
     }
 
     public static let `default` = CornerRadiusTheme()
+
+    // MARK: - Ergonomic / Spec Aliases
+    public var cardRadius: CGFloat { twelve }
+    public var r4: CGFloat { four }
+    public var r6: CGFloat { six }
+    public var r8: CGFloat { eight }
+    public var r10: CGFloat { ten }
+    public var r12: CGFloat { twelve }
+    public var r14: CGFloat { fourteen }
+    public var r15: CGFloat { fifteen }
+    public var r16: CGFloat { sixteen }
+    public var r20: CGFloat { twenty }
+    public var r30: CGFloat { thirty }
 }
 
 // MARK: - DesignMetric KeyPath Theme
@@ -299,6 +318,33 @@ public struct DesignMetricTheme: Sendable, Equatable {
     }
 
     public static let `default` = DesignMetricTheme()
+
+    // MARK: - Ergonomic / Spec Spacing Aliases
+    public var s0: CGFloat { p0 }
+    public var s1: CGFloat { p1 }
+    public var s2: CGFloat { p2 }
+    public var s3: CGFloat { p3 }
+    public var s4: CGFloat { p4 }
+    public var s5: CGFloat { p5 }
+    public var s8: CGFloat { p8 }
+    public var s10: CGFloat { p10 }
+    public var s12: CGFloat { p12 }
+    public var s14: CGFloat { p14 }
+    public var s16: CGFloat { p16 }
+    public var s18: CGFloat { p18 }
+    public var s20: CGFloat { p20 }
+    public var s24: CGFloat { p24 }
+    public var s30: CGFloat { p30 }
+    public var s32: CGFloat { p32 }
+    public var s36: CGFloat { p36 }
+    public var s40: CGFloat { p40 }
+    public var s50: CGFloat { p50 }
+    public var s60: CGFloat { p60 }
+    public var s64: CGFloat { p64 }
+    public var s80: CGFloat { p80 }
+    public var s100: CGFloat { p100 }
+    public var s120: CGFloat { p120 }
+    public var s160: CGFloat { p160 }
 }
 
 // MARK: - Opacity KeyPath Theme
@@ -708,6 +754,62 @@ extension View {
         self.lineSpacing(theme[keyPath: keyPath])
     }
 
+    /// Overload standard SwiftUI `frame` modifier using a single square size keypath from DesignMetricTheme
+    public func frame(
+        size: KeyPath<DesignMetricTheme, CGFloat>,
+        alignment: Alignment = .center,
+        theme: DesignMetricTheme = .default
+    ) -> some View {
+        let dimension = theme[keyPath: size]
+        return self.frame(width: dimension, height: dimension, alignment: alignment)
+    }
+
+    /// Overload standard SwiftUI `frame` modifier using a single square size keypath from SpacingTheme
+    public func frame(
+        size: KeyPath<SpacingTheme, CGFloat>,
+        alignment: Alignment = .center,
+        theme: SpacingTheme = .default
+    ) -> some View {
+        let dimension = theme[keyPath: size]
+        return self.frame(width: dimension, height: dimension, alignment: alignment)
+    }
+
+    /// Overload standard SwiftUI `frame` modifier using SpacingTheme keypaths: `.frame(width: \.twentyFour, height: \.twentyFour)`
+    public func frame(
+        width: KeyPath<SpacingTheme, CGFloat>? = nil,
+        height: KeyPath<SpacingTheme, CGFloat>? = nil,
+        alignment: Alignment = .center,
+        theme: SpacingTheme = .default
+    ) -> some View {
+        self.frame(
+            width: width.map { theme[keyPath: $0] },
+            height: height.map { theme[keyPath: $0] },
+            alignment: alignment
+        )
+    }
+
+    /// Overload standard SwiftUI `frame` with min/ideal/max constraints using SpacingTheme keypaths
+    public func frame(
+        minWidth: KeyPath<SpacingTheme, CGFloat>? = nil,
+        idealWidth: KeyPath<SpacingTheme, CGFloat>? = nil,
+        maxWidth: KeyPath<SpacingTheme, CGFloat>? = nil,
+        minHeight: KeyPath<SpacingTheme, CGFloat>? = nil,
+        idealHeight: KeyPath<SpacingTheme, CGFloat>? = nil,
+        maxHeight: KeyPath<SpacingTheme, CGFloat>? = nil,
+        alignment: Alignment = .center,
+        theme: SpacingTheme = .default
+    ) -> some View {
+        self.frame(
+            minWidth: minWidth.map { theme[keyPath: $0] },
+            idealWidth: idealWidth.map { theme[keyPath: $0] },
+            maxWidth: maxWidth.map { theme[keyPath: $0] },
+            minHeight: minHeight.map { theme[keyPath: $0] },
+            idealHeight: idealHeight.map { theme[keyPath: $0] },
+            maxHeight: maxHeight.map { theme[keyPath: $0] },
+            alignment: alignment
+        )
+    }
+
     /// Overload standard SwiftUI `frame` modifier using DesignMetricTheme keypaths
     public func frame(
         width: KeyPath<DesignMetricTheme, CGFloat>? = nil,
@@ -741,6 +843,59 @@ extension View {
             idealHeight: idealHeight.map { theme[keyPath: $0] },
             maxHeight: maxHeight.map { theme[keyPath: $0] },
             alignment: alignment
+        )
+    }
+
+    /// Adds a rounded rectangular stroke border overlay with token-driven corner radius, color, and line width.
+    public func overlayRoundedStroke(
+        cornerRadius: KeyPath<CornerRadiusTheme, CGFloat>,
+        color: KeyPath<ColorTheme, Color>,
+        lineWidth: KeyPath<StrokeWidthTheme, CGFloat> = \.one,
+        opacity: KeyPath<OpacityTheme, Double>? = nil,
+        style: RoundedCornerStyle = .continuous
+    ) -> some View {
+        self.modifier(
+            TokenOverlayRoundedStrokeModifier(
+                cornerRadiusKeyPath: cornerRadius,
+                colorKeyPath: color,
+                lineWidthKeyPath: lineWidth,
+                opacityKeyPath: opacity,
+                style: style
+            )
+        )
+    }
+
+    /// Adds a rounded rectangular stroke border overlay using DesignMetricTheme for corner radius.
+    public func overlayRoundedStroke(
+        cornerRadius: KeyPath<DesignMetricTheme, CGFloat>,
+        color: KeyPath<ColorTheme, Color>,
+        lineWidth: KeyPath<StrokeWidthTheme, CGFloat> = \.one,
+        opacity: KeyPath<OpacityTheme, Double>? = nil,
+        style: RoundedCornerStyle = .continuous
+    ) -> some View {
+        self.modifier(
+            TokenMetricOverlayRoundedStrokeModifier(
+                metricRadiusKeyPath: cornerRadius,
+                colorKeyPath: color,
+                lineWidthKeyPath: lineWidth,
+                opacityKeyPath: opacity,
+                style: style
+            )
+        )
+    }
+
+    /// Adds a capsule stroke border overlay with token-driven color and line width.
+    public func overlayCapsuleStroke(
+        color: KeyPath<ColorTheme, Color>,
+        lineWidth: KeyPath<StrokeWidthTheme, CGFloat> = \.one,
+        opacity: KeyPath<OpacityTheme, Double>? = nil
+    ) -> some View {
+        self.modifier(
+            TokenOverlayCapsuleStrokeModifier(
+                colorKeyPath: color,
+                lineWidthKeyPath: lineWidth,
+                opacityKeyPath: opacity
+            )
         )
     }
 
@@ -903,6 +1058,66 @@ private struct TokenBackgroundColorModifier: ViewModifier {
     }
 }
 
+private struct TokenOverlayRoundedStrokeModifier: ViewModifier {
+    @Environment(\.designTokens) private var theme
+    let cornerRadiusKeyPath: KeyPath<CornerRadiusTheme, CGFloat>
+    let colorKeyPath: KeyPath<ColorTheme, Color>
+    let lineWidthKeyPath: KeyPath<StrokeWidthTheme, CGFloat>
+    let opacityKeyPath: KeyPath<OpacityTheme, Double>?
+    let style: RoundedCornerStyle
+
+    func body(content: Content) -> some View {
+        let radius = theme.cornerRadius[keyPath: cornerRadiusKeyPath]
+        let baseColor = theme.colors[keyPath: colorKeyPath]
+        let resolvedColor = opacityKeyPath.map { baseColor.opacity(theme.opacity[keyPath: $0]) } ?? baseColor
+        let width = theme.strokeWidth[keyPath: lineWidthKeyPath]
+
+        content.overlay(
+            RoundedRectangle(cornerRadius: radius, style: style)
+                .stroke(resolvedColor, lineWidth: width)
+        )
+    }
+}
+
+private struct TokenMetricOverlayRoundedStrokeModifier: ViewModifier {
+    @Environment(\.designTokens) private var theme
+    let metricRadiusKeyPath: KeyPath<DesignMetricTheme, CGFloat>
+    let colorKeyPath: KeyPath<ColorTheme, Color>
+    let lineWidthKeyPath: KeyPath<StrokeWidthTheme, CGFloat>
+    let opacityKeyPath: KeyPath<OpacityTheme, Double>?
+    let style: RoundedCornerStyle
+
+    func body(content: Content) -> some View {
+        let radius = theme.metric[keyPath: metricRadiusKeyPath]
+        let baseColor = theme.colors[keyPath: colorKeyPath]
+        let resolvedColor = opacityKeyPath.map { baseColor.opacity(theme.opacity[keyPath: $0]) } ?? baseColor
+        let width = theme.strokeWidth[keyPath: lineWidthKeyPath]
+
+        content.overlay(
+            RoundedRectangle(cornerRadius: radius, style: style)
+                .stroke(resolvedColor, lineWidth: width)
+        )
+    }
+}
+
+private struct TokenOverlayCapsuleStrokeModifier: ViewModifier {
+    @Environment(\.designTokens) private var theme
+    let colorKeyPath: KeyPath<ColorTheme, Color>
+    let lineWidthKeyPath: KeyPath<StrokeWidthTheme, CGFloat>
+    let opacityKeyPath: KeyPath<OpacityTheme, Double>?
+
+    func body(content: Content) -> some View {
+        let baseColor = theme.colors[keyPath: colorKeyPath]
+        let resolvedColor = opacityKeyPath.map { baseColor.opacity(theme.opacity[keyPath: $0]) } ?? baseColor
+        let width = theme.strokeWidth[keyPath: lineWidthKeyPath]
+
+        content.overlay(
+            Capsule()
+                .stroke(resolvedColor, lineWidth: width)
+        )
+    }
+}
+
 // MARK: - Shape KeyPath Styling
 
 extension Shape {
@@ -1000,6 +1215,15 @@ extension VStack {
         self.init(alignment: alignment, spacing: SpacingTheme.default[keyPath: spacing], content: content)
     }
 
+    /// Overload standard VStack with DesignMetricTheme keypath: `VStack(spacing: \.s8) { ... }`
+    public init(
+        alignment: HorizontalAlignment = .center,
+        spacing: KeyPath<DesignMetricTheme, CGFloat>,
+        @ViewBuilder content: () -> Content
+    ) {
+        self.init(alignment: alignment, spacing: DesignMetricTheme.default[keyPath: spacing], content: content)
+    }
+
     @available(*, deprecated, renamed: "init(alignment:spacing:content:)")
     public init(
         alignment: HorizontalAlignment = .center,
@@ -1018,6 +1242,15 @@ extension HStack {
         @ViewBuilder content: () -> Content
     ) {
         self.init(alignment: alignment, spacing: SpacingTheme.default[keyPath: spacing], content: content)
+    }
+
+    /// Overload standard HStack with DesignMetricTheme keypath: `HStack(spacing: \.s8) { ... }`
+    public init(
+        alignment: VerticalAlignment = .center,
+        spacing: KeyPath<DesignMetricTheme, CGFloat>,
+        @ViewBuilder content: () -> Content
+    ) {
+        self.init(alignment: alignment, spacing: DesignMetricTheme.default[keyPath: spacing], content: content)
     }
 
     @available(*, deprecated, renamed: "init(alignment:spacing:content:)")
@@ -1040,6 +1273,16 @@ extension LazyVStack {
     ) {
         self.init(alignment: alignment, spacing: SpacingTheme.default[keyPath: spacing], pinnedViews: pinnedViews, content: content)
     }
+
+    /// Overload LazyVStack with DesignMetricTheme keypath: `LazyVStack(spacing: \.s12) { ... }`
+    public init(
+        alignment: HorizontalAlignment = .center,
+        spacing: KeyPath<DesignMetricTheme, CGFloat>,
+        pinnedViews: PinnedScrollableViews = .init(),
+        @ViewBuilder content: () -> Content
+    ) {
+        self.init(alignment: alignment, spacing: DesignMetricTheme.default[keyPath: spacing], pinnedViews: pinnedViews, content: content)
+    }
 }
 
 extension LazyHStack {
@@ -1051,6 +1294,16 @@ extension LazyHStack {
         @ViewBuilder content: () -> Content
     ) {
         self.init(alignment: alignment, spacing: SpacingTheme.default[keyPath: spacing], pinnedViews: pinnedViews, content: content)
+    }
+
+    /// Overload LazyHStack with DesignMetricTheme keypath: `LazyHStack(spacing: \.s12) { ... }`
+    public init(
+        alignment: VerticalAlignment = .center,
+        spacing: KeyPath<DesignMetricTheme, CGFloat>,
+        pinnedViews: PinnedScrollableViews = .init(),
+        @ViewBuilder content: () -> Content
+    ) {
+        self.init(alignment: alignment, spacing: DesignMetricTheme.default[keyPath: spacing], pinnedViews: pinnedViews, content: content)
     }
 }
 
@@ -1065,6 +1318,17 @@ extension LazyVGrid {
     ) {
         self.init(columns: columns, alignment: alignment, spacing: SpacingTheme.default[keyPath: spacing], pinnedViews: pinnedViews, content: content)
     }
+
+    /// Overload LazyVGrid with DesignMetricTheme keypath: `LazyVGrid(columns: [...], spacing: \.s12) { ... }`
+    public init(
+        columns: [GridItem],
+        alignment: HorizontalAlignment = .center,
+        spacing: KeyPath<DesignMetricTheme, CGFloat>,
+        pinnedViews: PinnedScrollableViews = .init(),
+        @ViewBuilder content: () -> Content
+    ) {
+        self.init(columns: columns, alignment: alignment, spacing: DesignMetricTheme.default[keyPath: spacing], pinnedViews: pinnedViews, content: content)
+    }
 }
 
 extension LazyHGrid {
@@ -1078,6 +1342,17 @@ extension LazyHGrid {
     ) {
         self.init(rows: rows, alignment: alignment, spacing: SpacingTheme.default[keyPath: spacing], pinnedViews: pinnedViews, content: content)
     }
+
+    /// Overload LazyHGrid with DesignMetricTheme keypath: `LazyHGrid(rows: [...], spacing: \.s12) { ... }`
+    public init(
+        rows: [GridItem],
+        alignment: VerticalAlignment = .center,
+        spacing: KeyPath<DesignMetricTheme, CGFloat>,
+        pinnedViews: PinnedScrollableViews = .init(),
+        @ViewBuilder content: () -> Content
+    ) {
+        self.init(rows: rows, alignment: alignment, spacing: DesignMetricTheme.default[keyPath: spacing], pinnedViews: pinnedViews, content: content)
+    }
 }
 
 extension GridItem {
@@ -1088,6 +1363,15 @@ extension GridItem {
         alignment: Alignment? = nil
     ) {
         self.init(size, spacing: SpacingTheme.default[keyPath: spacing], alignment: alignment)
+    }
+
+    /// Overload GridItem with DesignMetricTheme keypath: `GridItem(.adaptive(...), spacing: \.s12)`
+    public init(
+        _ size: GridItem.Size = .flexible(),
+        spacing: KeyPath<DesignMetricTheme, CGFloat>,
+        alignment: Alignment? = nil
+    ) {
+        self.init(size, spacing: DesignMetricTheme.default[keyPath: spacing], alignment: alignment)
     }
 }
 
