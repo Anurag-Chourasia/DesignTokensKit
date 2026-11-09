@@ -788,6 +788,11 @@ extension View {
         return self.shadow(color: resolved, radius: spacingTheme[keyPath: radius], x: x, y: resolvedY)
     }
 
+    /// Overload standard SwiftUI `lineSpacing` modifier using a SpacingTheme keypath: `.lineSpacing(\.four)`
+    public func lineSpacing(_ keyPath: KeyPath<SpacingTheme, CGFloat>, theme: SpacingTheme = .default) -> some View {
+        self.lineSpacing(theme[keyPath: keyPath])
+    }
+
     /// Overload standard SwiftUI `lineSpacing` modifier using a DesignMetricTheme keypath: `.lineSpacing(\.p3)`
     public func lineSpacing(_ keyPath: KeyPath<DesignMetricTheme, CGFloat>, theme: DesignMetricTheme = .default) -> some View {
         self.lineSpacing(theme[keyPath: keyPath])

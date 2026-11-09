@@ -1,6 +1,9 @@
 import SwiftUI
 import XCTest
 import DesignTokensKit
+#if canImport(AppKit)
+import AppKit
+#endif
 
 final class DesignTokensTests: XCTestCase {
     func testCompactTilePresetsRetainBothGeometryVariants() {
@@ -442,5 +445,344 @@ final class DesignTokensTests: XCTestCase {
             .frame(minWidth: \.touchTargetMin, minHeight: \.touchTargetMin)
             .environment(\.designTokens, DesignTokensTheme.default)
         XCTAssertNotNil(view)
+    }
+
+    func testAccentThemeAndAppBrandProperties() {
+        for theme in AccentTheme.allCases {
+            XCTAssertEqual(theme.id, theme.rawValue)
+            XCTAssertFalse(theme.displayName.isEmpty)
+            XCTAssertNotNil(theme.color)
+        }
+        for brand in AppBrand.allCases {
+            XCTAssertEqual(brand.id, brand.rawValue)
+        }
+    }
+
+    func testDesignTokensMessageTypographyAndSurfaces() {
+        let msg = MessageTypography(icon: .title, title: .headline, detail: .footnote)
+        XCTAssertNotNil(msg.icon)
+        XCTAssertNotNil(msg.title)
+        XCTAssertNotNil(msg.detail)
+
+        let surface = SurfaceMetrics(padding: EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8), cornerRadius: 8, borderWidth: 1)
+        XCTAssertEqual(surface.cornerRadius, 8)
+        XCTAssertEqual(surface.borderWidth, 1)
+
+        let button = ButtonMetrics(padding: EdgeInsets(), minimumWidth: 40, minimumHeight: 40, cornerRadius: 4)
+        XCTAssertEqual(button.minimumWidth, 40)
+        XCTAssertEqual(button.cornerRadius, 4)
+    }
+
+    func testAllThemePropertyAccessors() {
+        let typo = TypographyTheme.default
+        XCTAssertNotNil(typo.largeTitle)
+        XCTAssertNotNil(typo.title)
+        XCTAssertNotNil(typo.title2)
+        XCTAssertNotNil(typo.title3)
+        XCTAssertNotNil(typo.headline)
+        XCTAssertNotNil(typo.subheadline)
+        XCTAssertNotNil(typo.body)
+        XCTAssertNotNil(typo.callout)
+        XCTAssertNotNil(typo.footnote)
+        XCTAssertNotNil(typo.caption)
+        XCTAssertNotNil(typo.caption2)
+
+        let spacing = SpacingTheme.default
+        XCTAssertEqual(spacing.zero, 0)
+        XCTAssertEqual(spacing.two, 2)
+        XCTAssertEqual(spacing.four, 4)
+        XCTAssertEqual(spacing.five, 5)
+        XCTAssertEqual(spacing.six, 6)
+        XCTAssertEqual(spacing.eight, 8)
+        XCTAssertEqual(spacing.ten, 10)
+        XCTAssertEqual(spacing.twelve, 12)
+        XCTAssertEqual(spacing.fourteen, 14)
+        XCTAssertEqual(spacing.sixteen, 16)
+        XCTAssertEqual(spacing.eighteen, 18)
+        XCTAssertEqual(spacing.twenty, 20)
+        XCTAssertEqual(spacing.twentyFour, 24)
+        XCTAssertEqual(spacing.thirty, 30)
+        XCTAssertEqual(spacing.thirtyTwo, 32)
+        XCTAssertEqual(spacing.small, 8)
+        XCTAssertEqual(spacing.medium, 16)
+        XCTAssertEqual(spacing.large, 24)
+        XCTAssertEqual(spacing.extraLarge, 32)
+
+        let stroke = StrokeWidthTheme.default
+        XCTAssertEqual(stroke.one, 1)
+        XCTAssertEqual(stroke.two, 2)
+
+        let corner = CornerRadiusTheme.default
+        XCTAssertEqual(corner.four, 4)
+        XCTAssertEqual(corner.six, 6)
+        XCTAssertEqual(corner.eight, 8)
+        XCTAssertEqual(corner.ten, 10)
+        XCTAssertEqual(corner.twelve, 12)
+        XCTAssertEqual(corner.fourteen, 14)
+        XCTAssertEqual(corner.fifteen, 15)
+        XCTAssertEqual(corner.sixteen, 16)
+        XCTAssertEqual(corner.twenty, 20)
+        XCTAssertEqual(corner.thirty, 30)
+        XCTAssertEqual(corner.cardRadius, 12)
+        XCTAssertEqual(corner.r4, 4)
+        XCTAssertEqual(corner.r6, 6)
+        XCTAssertEqual(corner.r8, 8)
+        XCTAssertEqual(corner.r10, 10)
+        XCTAssertEqual(corner.r12, 12)
+        XCTAssertEqual(corner.r14, 14)
+        XCTAssertEqual(corner.r15, 15)
+        XCTAssertEqual(corner.r16, 16)
+        XCTAssertEqual(corner.r20, 20)
+        XCTAssertEqual(corner.r30, 30)
+
+        let opacity = OpacityTheme.default
+        XCTAssertEqual(opacity.p0_05, 0.05)
+        XCTAssertEqual(opacity.p0_1, 0.1)
+        XCTAssertEqual(opacity.p0_15, 0.15)
+        XCTAssertEqual(opacity.p0_18, 0.18)
+        XCTAssertEqual(opacity.p0_2, 0.2)
+        XCTAssertEqual(opacity.p0_25, 0.25)
+        XCTAssertEqual(opacity.p0_3, 0.3)
+        XCTAssertEqual(opacity.p0_35, 0.35)
+        XCTAssertEqual(opacity.p0_4, 0.4)
+        XCTAssertEqual(opacity.p0_5, 0.5)
+        XCTAssertEqual(opacity.p0_55, 0.55)
+        XCTAssertEqual(opacity.p0_6, 0.6)
+        XCTAssertEqual(opacity.p0_7, 0.7)
+        XCTAssertEqual(opacity.p0_75, 0.75)
+        XCTAssertEqual(opacity.p0_8, 0.8)
+        XCTAssertEqual(opacity.p0_85, 0.85)
+        XCTAssertEqual(opacity.p0_9, 0.9)
+        XCTAssertEqual(opacity.p1_0, 1.0)
+
+        let metrics = DesignMetricTheme.default
+        XCTAssertEqual(metrics.p0, 0)
+        XCTAssertEqual(metrics.p1, 1)
+        XCTAssertEqual(metrics.p1_5, 1.5)
+        XCTAssertEqual(metrics.p2, 2)
+        XCTAssertEqual(metrics.p3, 3)
+        XCTAssertEqual(metrics.p4, 4)
+        XCTAssertEqual(metrics.p5, 5)
+        XCTAssertEqual(metrics.p8, 8)
+        XCTAssertEqual(metrics.p10, 10)
+        XCTAssertEqual(metrics.p12, 12)
+        XCTAssertEqual(metrics.p13, 13)
+        XCTAssertEqual(metrics.p14, 14)
+        XCTAssertEqual(metrics.p16, 16)
+        XCTAssertEqual(metrics.p18, 18)
+        XCTAssertEqual(metrics.p19, 19)
+        XCTAssertEqual(metrics.p20, 20)
+        XCTAssertEqual(metrics.p21, 21)
+        XCTAssertEqual(metrics.p22_58, 22.58)
+        XCTAssertEqual(metrics.p24, 24)
+        XCTAssertEqual(metrics.p26_5, 26.5)
+        XCTAssertEqual(metrics.p28, 28)
+        XCTAssertEqual(metrics.p30, 30)
+        XCTAssertEqual(metrics.p31, 31)
+        XCTAssertEqual(metrics.p32, 32)
+        XCTAssertEqual(metrics.p33, 33)
+        XCTAssertEqual(metrics.p34, 34)
+        XCTAssertEqual(metrics.p35, 35)
+        XCTAssertEqual(metrics.p36, 36)
+        XCTAssertEqual(metrics.p40, 40)
+        XCTAssertEqual(metrics.p44, 44)
+        XCTAssertEqual(metrics.p48, 48)
+        XCTAssertEqual(metrics.p50, 50)
+        XCTAssertEqual(metrics.p52, 52)
+        XCTAssertEqual(metrics.p53, 53)
+        XCTAssertEqual(metrics.p55, 55)
+        XCTAssertEqual(metrics.p56, 56)
+        XCTAssertEqual(metrics.p60, 60)
+        XCTAssertEqual(metrics.p64, 64)
+        XCTAssertEqual(metrics.p80, 80)
+        XCTAssertEqual(metrics.p96, 96)
+        XCTAssertEqual(metrics.p100, 100)
+        XCTAssertEqual(metrics.p110, 110)
+        XCTAssertEqual(metrics.p120, 120)
+        XCTAssertEqual(metrics.p140, 140)
+        XCTAssertEqual(metrics.p160, 160)
+        XCTAssertEqual(metrics.p210, 210)
+        XCTAssertEqual(metrics.p248, 248)
+        XCTAssertEqual(metrics.p300, 300)
+        XCTAssertEqual(metrics.p320, 320)
+        XCTAssertEqual(metrics.p400, 400)
+
+        XCTAssertEqual(metrics.s0, 0)
+        XCTAssertEqual(metrics.s1, 1)
+        XCTAssertEqual(metrics.s2, 2)
+        XCTAssertEqual(metrics.s3, 3)
+        XCTAssertEqual(metrics.s4, 4)
+        XCTAssertEqual(metrics.s5, 5)
+        XCTAssertEqual(metrics.s8, 8)
+        XCTAssertEqual(metrics.s10, 10)
+        XCTAssertEqual(metrics.s12, 12)
+        XCTAssertEqual(metrics.s14, 14)
+        XCTAssertEqual(metrics.s16, 16)
+        XCTAssertEqual(metrics.s18, 18)
+        XCTAssertEqual(metrics.s20, 20)
+        XCTAssertEqual(metrics.s24, 24)
+        XCTAssertEqual(metrics.s30, 30)
+        XCTAssertEqual(metrics.s32, 32)
+        XCTAssertEqual(metrics.s36, 36)
+        XCTAssertEqual(metrics.s40, 40)
+        XCTAssertEqual(metrics.s50, 50)
+        XCTAssertEqual(metrics.s60, 60)
+        XCTAssertEqual(metrics.s64, 64)
+        XCTAssertEqual(metrics.s80, 80)
+        XCTAssertEqual(metrics.s100, 100)
+        XCTAssertEqual(metrics.s120, 120)
+        XCTAssertEqual(metrics.s160, 160)
+
+        let colors = ColorTheme.default
+        XCTAssertNotNil(colors.primary)
+        XCTAssertNotNil(colors.secondary)
+        XCTAssertNotNil(colors.white)
+        XCTAssertNotNil(colors.black)
+        XCTAssertNotNil(colors.gray)
+        XCTAssertNotNil(colors.red)
+        XCTAssertNotNil(colors.green)
+        XCTAssertNotNil(colors.blue)
+        XCTAssertNotNil(colors.yellow)
+        XCTAssertNotNil(colors.orange)
+        XCTAssertNotNil(colors.clear)
+        XCTAssertNotNil(colors.oceanAction)
+        XCTAssertNotNil(colors.turquoise)
+        XCTAssertNotNil(colors.ink)
+        XCTAssertNotNil(colors.lightBorder)
+        XCTAssertNotNil(colors.grouped)
+        XCTAssertNotNil(colors.groupedSecondary)
+        XCTAssertNotNil(colors.separator)
+        XCTAssertNotNil(colors.brandAction)
+        XCTAssertNotNil(colors.brandOnAction)
+        XCTAssertNotNil(colors.brandBackground)
+        XCTAssertNotNil(colors.brandSurface)
+        XCTAssertNotNil(colors.brandBorder)
+    }
+
+    @MainActor
+    func testShapeAndGradientStyling() {
+        let circle = Circle()
+            .fill(\.brandPrimary, opacity: \.p0_5)
+        XCTAssertNotNil(circle)
+
+        let stroked = Circle()
+            .stroke(\.action, opacity: \.p0_8, lineWidth: \.two)
+        XCTAssertNotNil(stroked)
+
+        let gradient1 = LinearGradient(
+            themeColors: [\.brandPrimary, \.action],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        XCTAssertNotNil(gradient1)
+
+        let stop1 = ThemeColorStop(\.brandPrimary, opacity: \.p0_5)
+        let stop2 = ThemeColorStop(\.action)
+        XCTAssertEqual(stop1, stop1)
+        XCTAssertNotEqual(stop1, stop2)
+
+        let gradient2 = LinearGradient(
+            stops: [stop1, stop2],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+        XCTAssertNotNil(gradient2)
+
+        let roundedRect = RoundedRectangle(cornerRadius: \.r12)
+        XCTAssertNotNil(roundedRect)
+        let roundedRectTwelve = RoundedRectangle(cornerRadius: \.twelve)
+        XCTAssertNotNil(roundedRectTwelve)
+    }
+
+    @MainActor
+    func testAllViewModifiersRendering() {
+        let v1 = Text("1")
+            .font(\.largeTitle)
+            .font(size: \.s16, weight: .bold, design: .default)
+            .padding(\.sixteen)
+            .padding(.horizontal, \.s16)
+            .lineSpacing(\.four)
+            .lineSpacing(\.s4)
+            .shadow(color: \.brandPrimary, opacity: \.p0_5, radius: \.four, x: 0, y: \.two)
+            .shadow(color: \.action, radius: \.four)
+            .environment(\.designTokens, DesignTokensTheme.default)
+
+        let v2 = Text("2")
+            .padding(\.s8)
+            .minimumScaleFactor(\.p0_5)
+            .opacity(\.p0_8)
+            .scaleEffect(\.p1_15)
+            .scaleEffect(x: \.p1_15, y: \.p0_95)
+            .environment(\.designTokens, DesignTokensTheme.default)
+
+        let v3 = Text("3")
+            .cornerRadius(\.r12)
+            .cornerRadius(\.p12)
+            .foregroundColor(\.brandPrimary, opacity: \.p0_8)
+            .foregroundStyle(\.action, opacity: \.p0_9)
+            .tint(\.action, opacity: \.p0_8)
+            .environment(\.designTokens, DesignTokensTheme.default)
+
+        let v4 = Text("4")
+            .background(\.surface, opacity: \.p0_5, ignoresSafeAreaEdges: .all)
+            .background(\.brandBackground)
+            .overlayRoundedStroke(cornerRadius: \.r12, color: \.border, lineWidth: \.one, opacity: \.p0_8)
+            .overlayRoundedStroke(cornerRadius: \.p12, color: \.border, lineWidth: \.two)
+            .overlayCapsuleStroke(color: \.action, lineWidth: \.one, opacity: \.p0_9)
+            .environment(\.designTokens, DesignTokensTheme.default)
+
+        #if canImport(AppKit)
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 400, height: 400), styleMask: [.borderless], backing: .buffered, defer: false)
+        let hosting1 = NSHostingView(rootView: v1)
+        let hosting2 = NSHostingView(rootView: v2)
+        let hosting3 = NSHostingView(rootView: v3)
+        let hosting4 = NSHostingView(rootView: v4)
+        for h in [hosting1, hosting2, hosting3, hosting4] {
+            h.frame = NSRect(x: 0, y: 0, width: 400, height: 400)
+            window.contentView = h
+            h.layoutSubtreeIfNeeded()
+        }
+        #endif
+
+        _ = ColorTheme.theme(for: .showBook)
+        _ = DesignTokensTheme.theme(for: .myTV)
+        _ = DesignTokensTheme(palette: BrandPalette.showBook)
+
+        for symbol in AppSymbol.allCases {
+            _ = Image(symbol: symbol)
+            _ = Label("Text", symbol: symbol)
+            _ = Label(LocalizedStringKey("Text"), symbol: symbol)
+            _ = Label("Text", systemImage: \.cropSquare)
+            _ = Label(LocalizedStringKey("Text"), systemImage: \.cropSquare)
+            _ = Label(LocalizedStringKey("Text"), \.crop)
+        }
+    }
+
+    @available(*, deprecated, message: "Testing deprecated View modifiers")
+    @MainActor
+    func testDeprecatedViewModifiers() {
+        let view = Text("Deprecated")
+            .tokenFont(\.body)
+            .tokenPadding(.all, \.eight)
+            .tokenOpacity(\.p0_8)
+            .tokenCornerRadius(\.twelve)
+        XCTAssertNotNil(view)
+
+        let vstack = VStack(alignment: .center, spacingKeyPath: \.six) { Text("1") }
+        XCTAssertNotNil(vstack)
+        let hstack = HStack(alignment: .center, spacingKeyPath: \.ten) { Text("1") }
+        XCTAssertNotNil(hstack)
+
+        let lazyVStack = LazyVStack(spacing: \.twelve) { Text("1") }
+        XCTAssertNotNil(lazyVStack)
+        let lazyHStack = LazyHStack(spacing: \.twelve) { Text("1") }
+        XCTAssertNotNil(lazyHStack)
+
+        let gridItem = GridItem(.flexible(), spacing: \.twelve)
+        XCTAssertNotNil(gridItem)
+        let lazyVGrid = LazyVGrid(columns: [gridItem], spacing: \.twelve) { Text("1") }
+        XCTAssertNotNil(lazyVGrid)
+        let lazyHGrid = LazyHGrid(rows: [gridItem], spacing: \.twelve) { Text("1") }
+        XCTAssertNotNil(lazyHGrid)
     }
 }
