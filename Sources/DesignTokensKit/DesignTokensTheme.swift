@@ -200,6 +200,7 @@ public struct DesignMetricTheme: Sendable, Equatable {
     public let p22_58: CGFloat
     public let p24: CGFloat
     public let p26_5: CGFloat
+    public let p28: CGFloat
     public let p30: CGFloat
     public let p32: CGFloat
     public let p31: CGFloat
@@ -208,12 +209,17 @@ public struct DesignMetricTheme: Sendable, Equatable {
     public let p35: CGFloat
     public let p36: CGFloat
     public let p40: CGFloat
+    public let p44: CGFloat
+    public let p48: CGFloat
     public let p50: CGFloat
+    public let p52: CGFloat
     public let p53: CGFloat
     public let p55: CGFloat
+    public let p56: CGFloat
     public let p60: CGFloat
     public let p64: CGFloat
     public let p80: CGFloat
+    public let p96: CGFloat
     public let p100: CGFloat
     public let p110: CGFloat
     public let p120: CGFloat
@@ -246,6 +252,7 @@ public struct DesignMetricTheme: Sendable, Equatable {
         p22_58: CGFloat = DesignMetric.p22_58,
         p24: CGFloat = DesignMetric.p24,
         p26_5: CGFloat = DesignMetric.p26_5,
+        p28: CGFloat = DesignMetric.p28,
         p30: CGFloat = DesignMetric.p30,
         p32: CGFloat = DesignMetric.p32,
         p31: CGFloat = DesignMetric.p31,
@@ -254,12 +261,17 @@ public struct DesignMetricTheme: Sendable, Equatable {
         p35: CGFloat = DesignMetric.p35,
         p36: CGFloat = DesignMetric.p36,
         p40: CGFloat = DesignMetric.p40,
+        p44: CGFloat = DesignMetric.p44,
+        p48: CGFloat = DesignMetric.p48,
         p50: CGFloat = DesignMetric.p50,
+        p52: CGFloat = DesignMetric.p52,
         p53: CGFloat = DesignMetric.p53,
         p55: CGFloat = DesignMetric.p55,
+        p56: CGFloat = DesignMetric.p56,
         p60: CGFloat = DesignMetric.p60,
         p64: CGFloat = DesignMetric.p64,
         p80: CGFloat = DesignMetric.p80,
+        p96: CGFloat = DesignMetric.p96,
         p100: CGFloat = DesignMetric.p100,
         p110: CGFloat = DesignMetric.p110,
         p120: CGFloat = DesignMetric.p120,
@@ -291,6 +303,7 @@ public struct DesignMetricTheme: Sendable, Equatable {
         self.p22_58 = p22_58
         self.p24 = p24
         self.p26_5 = p26_5
+        self.p28 = p28
         self.p30 = p30
         self.p32 = p32
         self.p31 = p31
@@ -299,12 +312,17 @@ public struct DesignMetricTheme: Sendable, Equatable {
         self.p35 = p35
         self.p36 = p36
         self.p40 = p40
+        self.p44 = p44
+        self.p48 = p48
         self.p50 = p50
+        self.p52 = p52
         self.p53 = p53
         self.p55 = p55
+        self.p56 = p56
         self.p60 = p60
         self.p64 = p64
         self.p80 = p80
+        self.p96 = p96
         self.p100 = p100
         self.p110 = p110
         self.p120 = p120
@@ -334,17 +352,38 @@ public struct DesignMetricTheme: Sendable, Equatable {
     public var s18: CGFloat { p18 }
     public var s20: CGFloat { p20 }
     public var s24: CGFloat { p24 }
+    public var s28: CGFloat { p28 }
     public var s30: CGFloat { p30 }
     public var s32: CGFloat { p32 }
     public var s36: CGFloat { p36 }
     public var s40: CGFloat { p40 }
+    public var s44: CGFloat { p44 }
+    public var s48: CGFloat { p48 }
     public var s50: CGFloat { p50 }
+    public var s52: CGFloat { p52 }
+    public var s56: CGFloat { p56 }
     public var s60: CGFloat { p60 }
     public var s64: CGFloat { p64 }
     public var s80: CGFloat { p80 }
+    public var s96: CGFloat { p96 }
     public var s100: CGFloat { p100 }
     public var s120: CGFloat { p120 }
     public var s160: CGFloat { p160 }
+
+    // MARK: - Semantic Preset Dimensions (§3.2)
+    public var iconSmall: CGFloat { p18 }
+    public var iconMedium: CGFloat { p28 }
+    public var iconLarge: CGFloat { p36 }
+    public var avatarSmall: CGFloat { p28 }
+    public var avatarMedium: CGFloat { p40 }
+    public var avatarLarge: CGFloat { p56 }
+    public var touchTargetMin: CGFloat { p44 }
+    public var touchTargetStandard: CGFloat { p48 }
+    public var touchTargetSpacious: CGFloat { p52 }
+    public var channelLogoWidth: CGFloat { p96 }
+    public var channelLogoHeight: CGFloat { p60 }
+    public var thumbnailSmallWidth: CGFloat { p60 }
+    public var thumbnailSmallHeight: CGFloat { p100 }
 }
 
 // MARK: - Opacity KeyPath Theme

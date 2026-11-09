@@ -28,6 +28,7 @@ public enum DesignMetric {
     public static let p22_58: CGFloat = 22.58
     public static let p24: CGFloat = 24
     public static let p26_5: CGFloat = 26.5
+    public static let p28: CGFloat = 28
     public static let p30: CGFloat = 30
     public static let p32: CGFloat = 32
     public static let p31: CGFloat = 31
@@ -36,12 +37,17 @@ public enum DesignMetric {
     public static let p35: CGFloat = 35
     public static let p36: CGFloat = 36
     public static let p40: CGFloat = 40
+    public static let p44: CGFloat = 44
+    public static let p48: CGFloat = 48
     public static let p50: CGFloat = 50
+    public static let p52: CGFloat = 52
     public static let p53: CGFloat = 53
     public static let p55: CGFloat = 55
+    public static let p56: CGFloat = 56
     public static let p60: CGFloat = 60
     public static let p64: CGFloat = 64
     public static let p80: CGFloat = 80
+    public static let p96: CGFloat = 96
     public static let p100: CGFloat = 100
     public static let p110: CGFloat = 110
     public static let p120: CGFloat = 120

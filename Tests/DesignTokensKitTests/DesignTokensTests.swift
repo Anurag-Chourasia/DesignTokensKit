@@ -336,4 +336,111 @@ final class DesignTokensTests: XCTestCase {
         let lazyHGrid = LazyHGrid(rows: [gridItem], spacing: \.s12) { Text("1") }
         XCTAssertNotNil(lazyHGrid)
     }
+
+    func testSemanticLayoutPresetsAndDeprecations() {
+        let compact = LayoutPreset.compact
+        XCTAssertEqual(compact.screenInset, 16)
+        XCTAssertEqual(compact.sectionSpacing, 24)
+        XCTAssertEqual(compact.cardRadius, 12)
+        XCTAssertEqual(compact.minimumControlHeight, 48)
+
+        let regular = LayoutPreset.regular
+        XCTAssertEqual(regular.screenInset, 20)
+        XCTAssertEqual(regular.sectionSpacing, 28)
+        XCTAssertEqual(regular.cardRadius, 12)
+        XCTAssertEqual(regular.minimumControlHeight, 48)
+
+        let spacious = LayoutPreset.spacious
+        XCTAssertEqual(spacious.screenInset, 24)
+        XCTAssertEqual(spacious.sectionSpacing, 32)
+        XCTAssertEqual(spacious.cardRadius, 20)
+        XCTAssertEqual(spacious.minimumControlHeight, 52)
+
+        let card = compact.card
+        XCTAssertEqual(card.cornerRadius, 12)
+        let button = compact.button
+        XCTAssertEqual(button.minimumHeight, 48)
+    }
+
+    @available(*, deprecated, message: "Testing deprecated API")
+    func testDeprecatedAppNamedLayoutPresets() {
+        XCTAssertEqual(LayoutPreset.compactMedia.screenInset, LayoutPreset.compact.screenInset)
+        XCTAssertEqual(LayoutPreset.editorial.screenInset, LayoutPreset.regular.screenInset)
+        XCTAssertEqual(LayoutPreset.softWellness.screenInset, LayoutPreset.spacious.screenInset)
+    }
+
+    func testIconAndAvatarPresets() {
+        XCTAssertEqual(IconPreset.small, CGSize(width: 18, height: 18))
+        XCTAssertEqual(IconPreset.medium, CGSize(width: 28, height: 28))
+        XCTAssertEqual(IconPreset.large, CGSize(width: 36, height: 36))
+
+        XCTAssertEqual(IconMetrics.small.size, IconPreset.small)
+        XCTAssertEqual(IconMetrics.medium.size, IconPreset.medium)
+        XCTAssertEqual(IconMetrics.large.size, IconPreset.large)
+
+        XCTAssertEqual(AvatarPreset.small, CGSize(width: 28, height: 28))
+        XCTAssertEqual(AvatarPreset.medium, CGSize(width: 40, height: 40))
+        XCTAssertEqual(AvatarPreset.large, CGSize(width: 56, height: 56))
+
+        XCTAssertEqual(AvatarMetrics.small.size, AvatarPreset.small)
+        XCTAssertEqual(AvatarMetrics.small.cornerRadius, 14)
+        XCTAssertEqual(AvatarMetrics.medium.size, AvatarPreset.medium)
+        XCTAssertEqual(AvatarMetrics.medium.cornerRadius, 20)
+        XCTAssertEqual(AvatarMetrics.large.size, AvatarPreset.large)
+        XCTAssertEqual(AvatarMetrics.large.cornerRadius, 28)
+    }
+
+    func testTouchTargetAndThumbnailPresets() {
+        XCTAssertEqual(TouchTargetPreset.minimum, 44)
+        XCTAssertEqual(TouchTargetPreset.standard, 48)
+        XCTAssertEqual(TouchTargetPreset.spacious, 52)
+
+        XCTAssertEqual(TouchTarget.min, 44)
+        XCTAssertEqual(TouchTarget.standard, 48)
+        XCTAssertEqual(TouchTarget.spacious, 52)
+
+        XCTAssertEqual(ThumbnailPreset.small, CGSize(width: 60, height: 90))
+        XCTAssertEqual(ThumbnailPreset.medium, CGSize(width: 90, height: 135))
+        XCTAssertEqual(ThumbnailPreset.large, CGSize(width: 120, height: 180))
+        XCTAssertEqual(ThumbnailPreset.channelLogo, CGSize(width: 96, height: 60))
+        XCTAssertEqual(ThumbnailPreset.card, CGSize(width: 120, height: 170))
+
+        XCTAssertEqual(ThumbnailMetrics.small.size, ThumbnailPreset.small)
+        XCTAssertEqual(ThumbnailMetrics.small.cornerRadius, 6)
+        XCTAssertEqual(ThumbnailMetrics.channelLogo.size, ThumbnailPreset.channelLogo)
+        XCTAssertEqual(ThumbnailMetrics.card.size, ThumbnailPreset.card)
+    }
+
+    @MainActor
+    func testDesignMetricThemeSemanticPresetsAndKeyPaths() {
+        let metrics = DesignMetricTheme.default
+        XCTAssertEqual(metrics[keyPath: \.iconSmall], 18)
+        XCTAssertEqual(metrics[keyPath: \.iconMedium], 28)
+        XCTAssertEqual(metrics[keyPath: \.iconLarge], 36)
+        XCTAssertEqual(metrics[keyPath: \.avatarSmall], 28)
+        XCTAssertEqual(metrics[keyPath: \.avatarMedium], 40)
+        XCTAssertEqual(metrics[keyPath: \.avatarLarge], 56)
+        XCTAssertEqual(metrics[keyPath: \.touchTargetMin], 44)
+        XCTAssertEqual(metrics[keyPath: \.touchTargetStandard], 48)
+        XCTAssertEqual(metrics[keyPath: \.touchTargetSpacious], 52)
+        XCTAssertEqual(metrics[keyPath: \.channelLogoWidth], 96)
+        XCTAssertEqual(metrics[keyPath: \.channelLogoHeight], 60)
+        XCTAssertEqual(metrics[keyPath: \.thumbnailSmallWidth], 60)
+        XCTAssertEqual(metrics[keyPath: \.thumbnailSmallHeight], 100)
+
+        XCTAssertEqual(metrics[keyPath: \.s28], 28)
+        XCTAssertEqual(metrics[keyPath: \.s44], 44)
+        XCTAssertEqual(metrics[keyPath: \.s48], 48)
+        XCTAssertEqual(metrics[keyPath: \.s52], 52)
+        XCTAssertEqual(metrics[keyPath: \.s56], 56)
+        XCTAssertEqual(metrics[keyPath: \.s96], 96)
+
+        let view = Text("Presets")
+            .frame(width: \.iconMedium, height: \.iconMedium)
+            .frame(size: \.s28)
+            .frame(width: \.channelLogoWidth, height: \.channelLogoHeight)
+            .frame(minWidth: \.touchTargetMin, minHeight: \.touchTargetMin)
+            .environment(\.designTokens, DesignTokensTheme.default)
+        XCTAssertNotNil(view)
+    }
 }
