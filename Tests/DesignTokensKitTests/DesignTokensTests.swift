@@ -365,13 +365,6 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertEqual(button.minimumHeight, 48)
     }
 
-    @available(*, deprecated, message: "Testing deprecated API")
-    func testDeprecatedAppNamedLayoutPresets() {
-        XCTAssertEqual(LayoutPreset.compactMedia.screenInset, LayoutPreset.compact.screenInset)
-        XCTAssertEqual(LayoutPreset.editorial.screenInset, LayoutPreset.regular.screenInset)
-        XCTAssertEqual(LayoutPreset.softWellness.screenInset, LayoutPreset.spacious.screenInset)
-    }
-
     func testIconAndAvatarPresets() {
         XCTAssertEqual(IconPreset.small, CGSize(width: 18, height: 18))
         XCTAssertEqual(IconPreset.medium, CGSize(width: 28, height: 28))

@@ -42,16 +42,6 @@ public struct LayoutPreset: Sendable {
         cardPadding: 20, cardRadius: 20, controlRadius: 14, minimumControlHeight: 52
     )
 
-    // MARK: - Deprecated App-Named Presets (Will be removed in iOS-77)
-    @available(*, deprecated, renamed: "compact", message: "Use LayoutPreset.compact instead of app-named .compactMedia")
-    public static let compactMedia = compact
-
-    @available(*, deprecated, renamed: "regular", message: "Use LayoutPreset.regular instead of app-named .editorial")
-    public static let editorial = regular
-
-    @available(*, deprecated, renamed: "spacious", message: "Use LayoutPreset.spacious instead of app-named .softWellness")
-    public static let softWellness = spacious
-
     public var card: SurfaceMetrics {
         .init(padding: .init(top: cardPadding, leading: cardPadding,
                             bottom: cardPadding, trailing: cardPadding),
