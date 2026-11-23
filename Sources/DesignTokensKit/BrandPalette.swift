@@ -106,15 +106,15 @@ public struct BrandPalette: Sendable, Equatable {
         ),
         background: Color.dynamic(
             light: Color(.sRGB, red: 0.9803921568627451, green: 0.9803921568627451, blue: 0.9686274509803922, opacity: 1.0),
-            dark: Color(.sRGB, red: 0.043137254901960784, green: 0.07058823529411765, blue: 0.12549019607843137, opacity: 1.0)
+            dark: Color(.sRGB, red: 0.07058823529411765, green: 0.07450980392156863, blue: 0.08627450980392157, opacity: 1.0)
         ),
         surface: Color.dynamic(
             light: Color.white,
-            dark: Color(.sRGB, red: 0.08235294117647059, green: 0.08235294117647059, blue: 0.14901960784313725, opacity: 1.0)
+            dark: Color(.sRGB, red: 0.10980392156862745, green: 0.11372549019607843, blue: 0.13333333333333333, opacity: 1.0)
         ),
         border: Color.dynamic(
             light: Color(.sRGB, red: 0.8196078431372549, green: 0.8352941176470589, blue: 0.8588235294117647, opacity: 1.0),
-            dark: Color(.sRGB, red: 0.2784313725490196, green: 0.3333333333333333, blue: 0.4117647058823529, opacity: 1.0)
+            dark: Color(.sRGB, red: 0.17254901960784313, green: 0.1803921568627451, blue: 0.20784313725490197, opacity: 1.0)
         ),
         text: Color.dynamic(
             light: Color(.sRGB, red: 0.06666666666666667, green: 0.09411764705882353, blue: 0.15294117647058825, opacity: 1.0),
@@ -138,7 +138,7 @@ public struct BrandPalette: Sendable, Equatable {
         ),
         authBackground: Color.dynamic(
             light: Color.white,
-            dark: Color(.sRGB, red: 0.043137254901960784, green: 0.07058823529411765, blue: 0.12549019607843137, opacity: 1.0)
+            dark: Color(.sRGB, red: 0.07058823529411765, green: 0.07450980392156863, blue: 0.08627450980392157, opacity: 1.0)
         )
     )
 
@@ -153,15 +153,15 @@ public struct BrandPalette: Sendable, Equatable {
         ),
         background: Color.dynamic(
             light: Color(.sRGB, red: 0.9764705882352941, green: 0.9803921568627451, blue: 0.9882352941176471, opacity: 1.0),
-            dark: Color(.sRGB, red: 0.047058823529411764, green: 0.06666666666666667, blue: 0.12156862745098039, opacity: 1.0)
+            dark: Color(.sRGB, red: 0.03529411764705882, green: 0.054901960784313725, blue: 0.10196078431372549, opacity: 1.0)
         ),
         surface: Color.dynamic(
             light: Color.white,
-            dark: Color(.sRGB, red: 0.06666666666666667, green: 0.09411764705882353, blue: 0.15294117647058825, opacity: 1.0)
+            dark: Color(.sRGB, red: 0.07058823529411765, green: 0.10196078431372549, blue: 0.16862745098039217, opacity: 1.0)
         ),
         border: Color.dynamic(
             light: Color(.sRGB, red: 0.8196078431372549, green: 0.8352941176470589, blue: 0.8588235294117647, opacity: 1.0),
-            dark: Color(.sRGB, red: 0.2784313725490196, green: 0.3333333333333333, blue: 0.4117647058823529, opacity: 1.0)
+            dark: Color(.sRGB, red: 0.12549019607843137, green: 0.17254901960784313, blue: 0.27058823529411763, opacity: 1.0)
         ),
         text: Color.dynamic(
             light: Color(.sRGB, red: 0.06666666666666667, green: 0.09411764705882353, blue: 0.15294117647058825, opacity: 1.0),
@@ -185,7 +185,7 @@ public struct BrandPalette: Sendable, Equatable {
         ),
         authBackground: Color.dynamic(
             light: Color.white,
-            dark: Color(.sRGB, red: 0.047058823529411764, green: 0.06666666666666667, blue: 0.12156862745098039, opacity: 1.0)
+            dark: Color(.sRGB, red: 0.03529411764705882, green: 0.054901960784313725, blue: 0.10196078431372549, opacity: 1.0)
         )
     )
 
