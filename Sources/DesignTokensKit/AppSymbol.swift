@@ -81,6 +81,11 @@ public enum AppSymbol: String, Sendable, CaseIterable {
     case personCropCircle = "person.crop.circle"
     case personCropCircleBadgeExclamationmark = "person.crop.circle.badge.exclamationmark"
     case rectanglePortraitAndArrowRight = "rectangle.portrait.and.arrow.right"
+    case lock = "lock"
+    case lockFill = "lock.fill"
+    case phone = "phone"
+    case phoneFill = "phone.fill"
+    case arrowUpForwardApp = "arrow.up.forward.app"
 
     // Layout & Display
     case squareGrid2x2 = "square.grid.2x2"
@@ -172,6 +177,11 @@ public struct SymbolTheme: Sendable, Equatable {
     public var personCropCircle: AppSymbol = .personCropCircle
     public var personCropCircleBadgeExclamationmark: AppSymbol = .personCropCircleBadgeExclamationmark
     public var rectanglePortraitAndArrowRight: AppSymbol = .rectanglePortraitAndArrowRight
+    public var lock: AppSymbol = .lock
+    public var lockFill: AppSymbol = .lockFill
+    public var phone: AppSymbol = .phone
+    public var phoneFill: AppSymbol = .phoneFill
+    public var arrowUpForwardApp: AppSymbol = .arrowUpForwardApp
 
     public var squareGrid2x2: AppSymbol = .squareGrid2x2
     public var grid: AppSymbol = .squareGrid2x2
