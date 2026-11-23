@@ -200,7 +200,7 @@ public struct BrandPalette: Sendable, Equatable {
         ),
         background: Color.dynamic(
             light: Color(.sRGB, red: 1.0, green: 0.984313725490196, blue: 0.9607843137254902, opacity: 1.0),
-            dark: Color(.sRGB, red: 0.043137254901960784, green: 0.07058823529411765, blue: 0.12549019607843137, opacity: 1.0)
+            dark: Color.black
         ),
         surface: Color.dynamic(
             light: Color.white,
@@ -232,7 +232,7 @@ public struct BrandPalette: Sendable, Equatable {
         ),
         authBackground: Color.dynamic(
             light: Color.white,
-            dark: Color(.sRGB, red: 0.043137254901960784, green: 0.07058823529411765, blue: 0.12549019607843137, opacity: 1.0)
+            dark: Color.black
         )
     )
 }
