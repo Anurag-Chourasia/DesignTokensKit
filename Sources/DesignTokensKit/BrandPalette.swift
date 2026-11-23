@@ -97,8 +97,8 @@ public struct BrandPalette: Sendable, Equatable {
 
     public static let showBook = BrandPalette(
         action: Color.dynamic(
-            light: Color(.sRGB, red: 0.0, green: 0.023529411764705882, blue: 0.30980392156862746, opacity: 1.0),
-            dark: Color(.sRGB, red: 0.6470588235294118, green: 0.7058823529411765, blue: 0.9882352941176471, opacity: 1.0)
+            light: Color(.sRGB, red: 0.0, green: 0.47843137254901963, blue: 1.0, opacity: 1.0),
+            dark: Color(.sRGB, red: 0.38, green: 0.65, blue: 1.0, opacity: 1.0)
         ),
         onAction: Color.dynamic(
             light: Color.white,
